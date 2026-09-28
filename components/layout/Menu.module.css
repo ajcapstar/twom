@@ -1,0 +1,126 @@
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  background: url(/favicon.ico) no-repeat 50% 50%;
+  background-size: cover;
+}
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.navLogo,
+.menuLogo {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  width: 6rem;
+}
+
+.navToggle {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  color: var(--base-100);
+  cursor: pointer;
+  z-index: 100;
+  padding: 0.5rem;
+}
+
+.navLogo,
+.navToggle {
+  padding: 0.5rem;
+  pointer-events: all;
+}
+
+.navToggleMenu {
+  color: var(--base-100);
+}
+
+.navToggleClose {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  color: var(--base-300);
+  opacity: 0;
+}
+
+.menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100svh;
+  padding: 2.5rem;
+  display: flex;
+  gap: 2rem;
+  color: var(--base-300);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.menu:global(.is-open) {
+  pointer-events: all;
+}
+
+.menuBgSvg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.menuLogo {
+  opacity: 0;
+  padding: 0.5rem;
+}
+
+.menuCol {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.menuCol a {
+  text-decoration: none;
+  color: var(--base-200);
+  font-family: var(--font-nippo), sans-serif;
+  font-size: clamp(2.5rem, 5vw, 5rem);
+  line-height: 1.35;
+  display: block;
+  width: max-content;
+  overflow: visible;
+}
+
+.menuCol p {
+  color: var(--base-200);
+  margin-bottom: 1rem;
+}
+
+.menu a :global(.char),
+.menuCol h3,
+.menuCol h6,
+.menuCol p {
+  will-change: transform, opacity;
+}
+
+@media (max-width: 1000px) {
+  .menu {
+    flex-direction: column-reverse;
+  }
+
+  .menuColLinks {
+    flex: 1.5;
+  }
+}

@@ -1,32 +1,26 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { nippo, zodiak } from "./fonts";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "TWOM | PROFESSIONAL CLOTHING BRAND",
   description: "Mobile luxury clothing brand store",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${nippo.variable} ${zodiak.variable} h-full antialiased`}
     >
-      <body className="min-h-screen bg-neutral-950 text-neutral-100 flex justify-center m-0">
-        <div className=" w-full max-w-md bg-black min-h-screen shadow-2xl border-x border-neutral-800 flex flex-col relative overflow-x-hidden">
-          {children}
-        </div>
+      <body>
+        {/* <body className="min-h-screen bg-neutral-950 text-neutral-100 flex justify-center m-0"> */}
+        {/* <div className=" w-full max-w-md bg-black min-h-screen shadow-2xl border-x border-neutral-800 flex flex-col relative overflow-x-hidden"> */}
+        <div>{children}</div>
       </body>
     </html>
   );
