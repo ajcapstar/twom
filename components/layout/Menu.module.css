@@ -22,6 +22,7 @@
   top: 2rem;
   left: 2rem;
   width: 6rem;
+  height: 2rem;
 }
 
 .navToggle {
@@ -112,6 +113,12 @@
 .menuCol p {
   color: var(--base-200);
   margin-bottom: 1rem;
+}
+
+.menuCol h3,
+.menuCol h6 {
+  color: var(--base-200);
+  font-weight: 400;
 }
 
 .menu a :global(.char),

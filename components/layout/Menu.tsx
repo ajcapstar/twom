@@ -203,7 +203,7 @@ const Menu = () => {
     <div ref={containerRef}>
       <div className={`${styles.nav} nav`}>
         <div className={`${styles.navLogo} nav-logo`}>
-          <Link href="/">
+          <Link href="/" style={{ position: "relative", display: "block", width: "100%", height: "100%" }}>
             <Image src="/vercel.svg" alt="Logo" fill />
           </Link>
         </div>
