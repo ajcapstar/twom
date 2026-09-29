@@ -37,9 +37,9 @@ const Menu = () => {
       const OPEN_HIDDEN = `M${svgWidth}, 0 Q${svgCenterX}, 0, 0, 0 L0, 0 L${svgWidth}, 0 Z`;
       const OPEN_BULGE = `M${svgWidth}, 345 Q${svgCenterX}, 620, 0, 345 L0, 0 L${svgWidth}, 0 Z`;
       const OPEN_FULL = `M${svgWidth}, ${svgHeight} Q${svgCenterX}, ${svgHeight}, 0, ${svgHeight} L0, 0 L${svgWidth}, 0 Z`;
-      const CLOSE_START = `M${svgWidth}, 0 Q${svgCenterX}, 0, 0, 0 L0, 0 L${svgWidth}, ${svgHeight} Z`;
-      const CLOSE_BULGE = `M${svgWidth}, 350 Q${svgCenterX}, 130, 0, 350 L0, ${svgHeight} L${svgWidth}, ${svgHeight} Z`;
-      const CLOSE_HIDDEN = `M${svgWidth}, ${svgHeight} Q${svgCenterX}, ${svgHeight}, 0, ${svgHeight} L0, ${svgHeight} L${svgWidth}, ${svgHeight} Z`;
+      // const CLOSE_START = `M${svgWidth}, 0 Q${svgCenterX}, 0, 0, 0 L0, 0 L${svgWidth}, ${svgHeight} Z`;
+      // const CLOSE_BULGE = `M${svgWidth}, 350 Q${svgCenterX}, 130, 0, 350 L0, ${svgHeight} L${svgWidth}, ${svgHeight} Z`;
+      // const CLOSE_HIDDEN = `M${svgWidth}, ${svgHeight} Q${svgCenterX}, ${svgHeight}, 0, ${svgHeight} L0, ${svgHeight} L${svgWidth}, ${svgHeight} Z`;
       gsap.set(menuBg, { attr: { d: OPEN_HIDDEN } });
       const splits: SplitText[] = [];
       menuLinks.forEach((link) => {
