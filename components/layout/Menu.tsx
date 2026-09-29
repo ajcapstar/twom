@@ -15,7 +15,10 @@ const Menu = () => {
   const isAnimatingRef = useRef(false);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
+    let ctx: gsap.Context;
+
+    document.fonts.ready.then(() => {
+    ctx = gsap.context(() => {
       const navToggle = document.querySelector(".nav-toggle");
       const navToggleMenu = document.querySelector(".nav-toggle-menu");
       const navToggleClose = document.querySelector(".nav-toggle-close");
@@ -135,7 +138,6 @@ const Menu = () => {
         );
       };
       const closeMenu = () => {
-        menu?.classList.remove("is-open");
         gsap.to(navToggleClose, { duration: 0.3, opacity: 0, ease: "none" });
         gsap.to(navToggleMenu, {
           duration: 0.3,
@@ -173,17 +175,9 @@ const Menu = () => {
             ease: "power3.out",
           });
       };
-      const handleToggle = (e?: Event) => {
-        if (e) {
-          e.preventDefault();
-          e.stopPropagation();
-        }
+      const handleToggle = () => {
         if (isAnimatingRef.current) return;
         isAnimatingRef.current = true;
-        setTimeout(() => {
-          isAnimatingRef.current = false;
-        }, 1800);
-
         if (!isOpenRef.current) {
           isOpenRef.current = true;
           openMenu();
@@ -193,22 +187,16 @@ const Menu = () => {
         }
       };
 
-      navToggle?.addEventListener("click", handleToggle);
-      navToggle?.addEventListener("touchstart", handleToggle as EventListener, {
-        passive: false,
-      });
+      navToggle?.addEventListener("pointerdown", handleToggle);
 
       return () => {
-        navToggle?.removeEventListener("click", handleToggle);
-        navToggle?.removeEventListener(
-          "touchstart",
-          handleToggle as EventListener,
-        );
+        navToggle?.removeEventListener("pointerdown", handleToggle);
         splits.forEach((split) => split.revert());
       };
     }, containerRef);
+    }); // end document.fonts.ready.then
 
-    return () => ctx.revert();
+    return () => ctx?.revert();
   }, []);
 
   return (
@@ -246,7 +234,7 @@ const Menu = () => {
           />
         </svg>
 
-        <Link href="/">
+        <Link href="/" className={`${styles.menuLogo} menu-logo`}>
           <span
             style={{
               position: "relative",
