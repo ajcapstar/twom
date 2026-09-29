@@ -31,7 +31,9 @@ const Menu = () => {
       // --- PASTE TUTORIAL GSAP TIMELINE CODE HERE ---
 
       const viewBoxAttr = menuBgSvg?.getAttribute("viewBox");
-      const viewBoxValues = viewBoxAttr ? viewBoxAttr.split(" ").map(Number) : [];
+      const viewBoxValues = viewBoxAttr
+        ? viewBoxAttr.split(" ").map(Number)
+        : [];
       const svgWidth =
         (menuBgSvg as SVGSVGElement)?.viewBox?.baseVal?.width ||
         viewBoxValues[2] ||
@@ -192,11 +194,16 @@ const Menu = () => {
       };
 
       navToggle?.addEventListener("click", handleToggle);
-      navToggle?.addEventListener("touchstart", handleToggle as EventListener, { passive: false });
+      navToggle?.addEventListener("touchstart", handleToggle as EventListener, {
+        passive: false,
+      });
 
       return () => {
         navToggle?.removeEventListener("click", handleToggle);
-        navToggle?.removeEventListener("touchstart", handleToggle as EventListener);
+        navToggle?.removeEventListener(
+          "touchstart",
+          handleToggle as EventListener,
+        );
         splits.forEach((split) => split.revert());
       };
     }, containerRef);
@@ -220,7 +227,9 @@ const Menu = () => {
         aria-label="Toggle Menu"
       >
         <span className={`${styles.navToggleMenu} nav-toggle-menu`}>Menu</span>
-        <span className={`${styles.navToggleClose} nav-toggle-close`}>Close</span>
+        <span className={`${styles.navToggleClose} nav-toggle-close`}>
+          Close
+        </span>
       </button>
 
       <div className={`${styles.menu} menu`}>
