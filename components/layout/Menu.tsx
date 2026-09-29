@@ -30,16 +30,22 @@ const Menu = () => {
 
       // --- PASTE TUTORIAL GSAP TIMELINE CODE HERE ---
 
-      const svgWidth = (menuBgSvg as SVGSVGElement).viewBox.baseVal.width;
-      const svgHeight = (menuBgSvg as SVGSVGElement).viewBox.baseVal.height;
+      const viewBoxAttr = menuBgSvg?.getAttribute("viewBox");
+      const viewBoxValues = viewBoxAttr ? viewBoxAttr.split(" ").map(Number) : [];
+      const svgWidth =
+        (menuBgSvg as SVGSVGElement)?.viewBox?.baseVal?.width ||
+        viewBoxValues[2] ||
+        1131;
+      const svgHeight =
+        (menuBgSvg as SVGSVGElement)?.viewBox?.baseVal?.height ||
+        viewBoxValues[3] ||
+        861;
       const svgCenterX = svgWidth / 2;
 
       const OPEN_HIDDEN = `M${svgWidth}, 0 Q${svgCenterX}, 0, 0, 0 L0, 0 L${svgWidth}, 0 Z`;
       const OPEN_BULGE = `M${svgWidth}, 345 Q${svgCenterX}, 620, 0, 345 L0, 0 L${svgWidth}, 0 Z`;
       const OPEN_FULL = `M${svgWidth}, ${svgHeight} Q${svgCenterX}, ${svgHeight}, 0, ${svgHeight} L0, 0 L${svgWidth}, 0 Z`;
-      const CLOSE_START = `M${svgWidth}, 0 Q${svgCenterX}, 0, 0, 0 L0, 0 L${svgWidth}, ${svgHeight} Z`;
-      const CLOSE_BULGE = `M${svgWidth}, 350 Q${svgCenterX}, 130, 0, 350 L0, ${svgHeight} L${svgWidth}, ${svgHeight} Z`;
-      const CLOSE_HIDDEN = `M${svgWidth}, ${svgHeight} Q${svgCenterX}, ${svgHeight}, 0, ${svgHeight} L0, ${svgHeight} L${svgWidth}, ${svgHeight} Z`;
+
       gsap.set(menuBg, { attr: { d: OPEN_HIDDEN } });
       const splits: SplitText[] = [];
       menuLinks.forEach((link) => {
@@ -70,16 +76,16 @@ const Menu = () => {
         });
         const tl = gsap.timeline({
           onComplete: () => {
-            isAnimatingRef.current = false; // <--- React version!
+            isAnimatingRef.current = false;
           },
         });
         tl.to(menuBg, {
           duration: 0.5,
-          attr: { d: OPEN_BULGE }, // Morphs into the "bulge" shape
+          attr: { d: OPEN_BULGE },
           ease: "power4.in",
         }).to(menuBg, {
           duration: 0.5,
-          attr: { d: OPEN_FULL }, // Morphs into the fully open shape
+          attr: { d: OPEN_FULL },
           ease: "power4.out",
         });
         tl.to(
@@ -104,7 +110,6 @@ const Menu = () => {
         );
         const menuLinksChars = splits.flatMap((s) => s.chars);
 
-        // 9. Slide the links in from the right
         tl.to(
           menuLinksChars,
           {
@@ -116,7 +121,6 @@ const Menu = () => {
           0.45,
         );
 
-        // 10. Fade the links in
         tl.to(
           menuLinksChars,
           {
@@ -146,7 +150,7 @@ const Menu = () => {
             splits.forEach((split) => {
               gsap.set(split.chars, { opacity: 0, x: "750%" });
             });
-            gsap.set(menuLinks, { opacity: 1 }); // Reset links container
+            gsap.set(menuLinks, { opacity: 1 });
             gsap.set(menuInfoItems, { opacity: 0, y: 100 });
             gsap.set(menuLogo, { opacity: 0 });
             isAnimatingRef.current = false;
@@ -167,9 +171,17 @@ const Menu = () => {
             ease: "power3.out",
           });
       };
-      const handleToggle = () => {
+      const handleToggle = (e?: Event) => {
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
         if (isAnimatingRef.current) return;
         isAnimatingRef.current = true;
+        setTimeout(() => {
+          isAnimatingRef.current = false;
+        }, 1800);
+
         if (!isOpenRef.current) {
           isOpenRef.current = true;
           openMenu();
@@ -180,10 +192,12 @@ const Menu = () => {
       };
 
       navToggle?.addEventListener("click", handleToggle);
+      navToggle?.addEventListener("touchstart", handleToggle as EventListener, { passive: false });
 
       return () => {
         navToggle?.removeEventListener("click", handleToggle);
-        splits.forEach((split) => split.revert()); // Prevents memory leaks
+        navToggle?.removeEventListener("touchstart", handleToggle as EventListener);
+        splits.forEach((split) => split.revert());
       };
     }, containerRef);
 
@@ -200,10 +214,14 @@ const Menu = () => {
         </div>
       </div>
 
-      <div className={`${styles.navToggle} nav-toggle`}>
-        <p className={`${styles.navToggleMenu} nav-toggle-menu`}>Menu</p>
-        <p className={`${styles.navToggleClose} nav-toggle-close`}>Close</p>
-      </div>
+      <button
+        type="button"
+        className={`${styles.navToggle} nav-toggle`}
+        aria-label="Toggle Menu"
+      >
+        <span className={`${styles.navToggleMenu} nav-toggle-menu`}>Menu</span>
+        <span className={`${styles.navToggleClose} nav-toggle-close`}>Close</span>
+      </button>
 
       <div className={`${styles.menu} menu`}>
         <svg
@@ -219,10 +237,18 @@ const Menu = () => {
           />
         </svg>
 
-        <Link href="/" className={`${styles.menuLogo} menu-logo`}>
-          <Image src="/vercel.svg" alt="Logo" fill />
+        <Link href="/">
+          <span
+            style={{
+              position: "relative",
+              display: "block",
+              width: "100%",
+              height: "100%",
+            }}
+          >
+            <Image src="/vercel.svg" alt="Logo" fill />
+          </span>
         </Link>
-
         <div
           className={`${styles.menuCol} ${styles.menuColInfo} menu-col menu-col-info`}
         >
