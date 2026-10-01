@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
@@ -14,7 +14,7 @@ const Menu = () => {
   const isOpenRef = useRef(false);
   const isAnimatingRef = useRef(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       const navToggle = document.querySelector(".nav-toggle");
       const navToggleMenu = document.querySelector(".nav-toggle-menu");
@@ -28,7 +28,9 @@ const Menu = () => {
         ".menu-col-info p, .menu-col-info h3, .menu-col-info h6",
       );
 
-      // --- PASTE TUTORIAL GSAP TIMELINE CODE HERE ---
+      if (!menuBg || !menuBgSvg) return;
+      gsap.set(menuLogo, { opacity: 0 });
+      gsap.set(navToggleClose, { opacity: 0 });
 
       const svgWidth = (menuBgSvg as SVGSVGElement).viewBox.baseVal.width;
       const svgHeight = (menuBgSvg as SVGSVGElement).viewBox.baseVal.height;
@@ -129,7 +131,7 @@ const Menu = () => {
         );
       };
       const closeMenu = () => {
-        menu?.classList.remove("is-open");
+        // menu?.classList.remove("is-open");
         gsap.to(navToggleClose, { duration: 0.3, opacity: 0, ease: "none" });
         gsap.to(navToggleMenu, {
           duration: 0.3,
