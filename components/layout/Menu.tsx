@@ -187,7 +187,7 @@ const Menu = () => {
       };
     }, containerRef);
 
-    return () => ctx.revert();
+    return () => ctx?.revert();
   }, []);
 
   return (
@@ -200,10 +200,16 @@ const Menu = () => {
         </div>
       </div>
 
-      <div className={`${styles.navToggle} nav-toggle`}>
-        <p className={`${styles.navToggleMenu} nav-toggle-menu`}>Menu</p>
-        <p className={`${styles.navToggleClose} nav-toggle-close`}>Close</p>
-      </div>
+      <button
+        type="button"
+        className={`${styles.navToggle} nav-toggle`}
+        aria-label="Toggle Menu"
+      >
+        <span className={`${styles.navToggleMenu} nav-toggle-menu`}>Menu</span>
+        <span className={`${styles.navToggleClose} nav-toggle-close`}>
+          Close
+        </span>
+      </button>
 
       <div className={`${styles.menu} menu`}>
         <svg
@@ -222,7 +228,6 @@ const Menu = () => {
         <Link href="/" className={`${styles.menuLogo} menu-logo`}>
           <Image src="/TWOM.png" alt="Logo" width={100} height={100} />
         </Link>
-
         <div
           className={`${styles.menuCol} ${styles.menuColInfo} menu-col menu-col-info`}
         >
