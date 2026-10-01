@@ -1,0 +1,24 @@
+.stars {
+  display: flex;
+  gap: 0.1em;
+}
+
+.star {
+  color: #d1ccc9;
+  transition: color 0.2s ease;
+}
+
+.filled {
+  color: #a374ff;
+}
+
+.half {
+  background: linear-gradient(90deg, #a374ff 50%, #d1ccc9 50%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.sm { font-size: 0.875rem; }
+.md { font-size: 1.125rem; }
+.lg { font-size: 1.5rem; }

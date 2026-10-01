@@ -3,8 +3,15 @@ import { nippo, zodiak } from "./fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "TWOM | PROFESSIONAL CLOTHING BRAND",
-  description: "Mobile luxury clothing brand store",
+  title: "TWOM | Professional Clothing Brand",
+  description:
+    "TWOM is a Brampton-based professional clothing brand crafting timeless, minimalist pieces for those who move differently.",
+  keywords: ["TWOM", "clothing", "Brampton", "professional wear", "minimalist fashion"],
+  openGraph: {
+    title: "TWOM | Professional Clothing Brand",
+    description: "Crafted for the ones who move differently.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -18,9 +25,7 @@ export default function RootLayout({
       className={`${nippo.variable} ${zodiak.variable} h-full antialiased`}
     >
       <body>
-        {/* <body className="min-h-screen bg-neutral-950 text-neutral-100 flex justify-center m-0"> */}
-        {/* <div className=" w-full max-w-md bg-black min-h-screen shadow-2xl border-x border-neutral-800 flex flex-col relative overflow-x-hidden"> */}
-        <div>{children}</div>
+        {children}
       </body>
     </html>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
@@ -195,7 +195,7 @@ const Menu = () => {
       <div className={`${styles.nav} nav`}>
         <div className={`${styles.navLogo} nav-logo`}>
           <Link href="/">
-            <Image src="/vercel.svg" alt="Logo" fill />
+            <Image src="/TWOM.png" alt="Logo" width={100} height={100} />
           </Link>
         </div>
       </div>
@@ -220,7 +220,7 @@ const Menu = () => {
         </svg>
 
         <Link href="/" className={`${styles.menuLogo} menu-logo`}>
-          <Image src="/vercel.svg" alt="Logo" fill />
+          <Image src="/TWOM.png" alt="Logo" width={100} height={100} />
         </Link>
 
         <div

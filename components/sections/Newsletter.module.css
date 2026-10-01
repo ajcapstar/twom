@@ -1,0 +1,140 @@
+.section {
+  padding: var(--padding-box-top) var(--space-7);
+  background: var(--base-200);
+}
+
+.inner {
+  max-width: 700px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  align-items: flex-start;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.eyebrow {
+  font-family: var(--font-nippo), sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.heading {
+  font-family: var(--font-nippo), sans-serif;
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 450;
+  color: #fff;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.accent {
+  font-family: var(--font-zodiak), serif;
+  font-style: italic;
+  color: var(--base-100);
+}
+
+.sub {
+  font-family: var(--font-zodiak), serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 480px;
+}
+
+.form {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.input {
+  flex: 1;
+  min-width: 220px;
+  padding: var(--padding-input);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-family: var(--font-zodiak), serif;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.input:focus {
+  border-color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.loading {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.error {
+  width: 100%;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Success state */
+.success {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  color: #fff;
+  font-family: var(--font-zodiak), serif;
+  font-size: 1.1rem;
+  font-style: italic;
+}
+
+.successIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+/* sr-only utility */
+:global(.sr-only) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+@media (max-width: 600px) {
+  .section {
+    padding: var(--space-7) var(--padding-page);
+  }
+
+  .form {
+    flex-direction: column;
+  }
+
+  .input {
+    width: 100%;
+  }
+}

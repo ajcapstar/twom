@@ -1,0 +1,106 @@
+.card {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.sm {
+  aspect-ratio: 3 / 4;
+}
+
+.lg {
+  aspect-ratio: 16 / 9;
+}
+
+.imageWrapper {
+  position: absolute;
+  inset: 0;
+}
+
+.image {
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.card:hover .image {
+  transform: scale(1.07);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(34, 34, 37, 0.75) 0%,
+    rgba(34, 34, 37, 0.1) 55%,
+    transparent 100%
+  );
+  transition: opacity 0.4s ease;
+}
+
+.card:hover .overlay {
+  opacity: 0.9;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.5rem;
+  color: var(--base-100);
+}
+
+.subtitle {
+  font-family: var(--font-nippo), sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--base-200);
+  margin-bottom: 0.25rem;
+}
+
+.title {
+  font-family: var(--font-nippo), sans-serif;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 450;
+  color: var(--base-100);
+  line-height: 1.2;
+  margin-bottom: 0.3rem;
+}
+
+.itemCount {
+  font-size: 0.8rem;
+  color: rgba(240, 238, 238, 0.65);
+  margin-bottom: 0.75rem;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-nippo), sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--base-100);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.card:hover .cta {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.arrow {
+  transition: transform 0.25s ease;
+}
+
+.card:hover .arrow {
+  transform: translateX(4px);
+}

@@ -1,0 +1,125 @@
+.footer {
+  background: var(--color-navy);
+  color: var(--base-100);
+  padding: var(--padding-box-top) var(--space-7) var(--space-6);
+}
+
+.top {
+  display: flex;
+  gap: var(--space-8);
+  padding-bottom: var(--space-7);
+  border-bottom: 1px solid rgba(240, 238, 238, 0.12);
+  flex-wrap: wrap;
+}
+
+.brand {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.logo {
+  font-family: var(--font-nippo), sans-serif;
+  font-size: 2.5rem;
+  font-weight: 450;
+  letter-spacing: -0.02em;
+  color: var(--base-100);
+}
+
+.tagline {
+  font-family: var(--font-zodiak), serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: rgba(240, 238, 238, 0.55);
+  max-width: 220px;
+  line-height: 1.6;
+}
+
+.links {
+  display: flex;
+  gap: var(--space-7);
+  flex-wrap: wrap;
+}
+
+.linkGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.groupTitle {
+  font-family: var(--font-nippo), sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--base-200);
+  margin-bottom: var(--space-1);
+}
+
+.linkGroup ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.link {
+  font-size: 0.875rem;
+  color: rgba(240, 238, 238, 0.65);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: var(--base-100);
+}
+
+.bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--space-4);
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.copy {
+  font-size: 0.8rem;
+  color: rgba(240, 238, 238, 0.4);
+}
+
+.socials {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.socialLink {
+  font-family: var(--font-nippo), sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(240, 238, 238, 0.5);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.socialLink:hover {
+  color: var(--base-200);
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: var(--space-7) var(--padding-page) var(--space-5);
+  }
+
+  .top {
+    gap: var(--space-6);
+    flex-direction: column;
+  }
+
+  .links {
+    gap: var(--space-6);
+  }
+}

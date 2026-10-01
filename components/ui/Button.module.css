@@ -1,0 +1,85 @@
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-nippo), sans-serif;
+  font-weight: 450;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  transition: color 0.35s ease;
+}
+
+.btnText {
+  position: relative;
+  z-index: 1;
+}
+
+.btnBg {
+  position: absolute;
+  inset: 0;
+  transform: translateY(101%);
+  transition: transform 0.35s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.btn:hover .btnBg {
+  transform: translateY(0);
+}
+
+/* Variants */
+.primary {
+  background: var(--base-300);
+  color: var(--base-100);
+}
+
+.primary .btnBg {
+  background: var(--base-200);
+}
+
+.primary:hover {
+  color: var(--base-100);
+}
+
+.outline {
+  background: transparent;
+  color: var(--base-300);
+  border: 1.5px solid var(--base-300);
+}
+
+.outline .btnBg {
+  background: var(--base-300);
+}
+
+.outline:hover {
+  color: var(--base-100);
+}
+
+.ghost {
+  background: transparent;
+  color: var(--base-300);
+}
+
+.ghost .btnBg {
+  background: rgba(34, 34, 37, 0.08);
+}
+
+/* Sizes */
+.sm {
+  padding: 0.5rem 1.25rem;
+  font-size: 0.75rem;
+}
+
+.md {
+  padding: 0.75rem 2rem;
+  font-size: 0.875rem;
+}
+
+.lg {
+  padding: 1rem 2.75rem;
+  font-size: 1rem;
+}
