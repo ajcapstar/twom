@@ -5,10 +5,17 @@
   --foreground: #171717;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-twom-bg: #ffffff;
+  --color-twom-title: #101828;
+  --color-twom-body: #344054;
+  --color-twom-muted: #667085;
+  --color-twom-border: #d0d5dd;
+  --color-twom-dark: #111111;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -21,79 +28,5 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-zodiak), serif;
-}
-
-h1 {
-  font-size: clamp(2.5rem, 5vw, 5rem);
-  line-height: 1.35;
-  font-family: var(--font-nippo), sans-serif;
-}
-
-h3,
-h6 {
-  font-family: var(--font-nippo), sans-serif;
-  font-weight: 450;
-  line-height: 1.35;
-  letter-spacing: -2%;
-}
-
-h3 {
-  font-size: clamp(1.5rem, 3vw, 3rem);
-}
-
-h6 {
-  font-size: clamp(1rem, 1.25vw, 1.5rem);
-}
-
-@theme inline {
-  /* ── Fonts ───────────────────────────── */
-  --font-nippo: var(--font-nippo);
-  --font-zodiak: var(--font-zodiak);
-
-  /* ── Primary (brand yellow) ──────────── */
-  --color-primary: #e8ff00;
-  --color-primary-dark: #c9dd00;
-
-  /* ── Secondary (from palette) ────────── */
-  --color-navy: #0b1f68;
-  --color-blue: #1849a9;
-
-  /* ── Neutrals ────────────────────────── */
-  --color-neutral-900: #111111;
-  --color-neutral-800: #1a1a1a;
-  --color-neutral-600: #666666;
-  --color-neutral-400: #8a8a8a;
-  --color-neutral-200: #e5e5e5;
-  --color-neutral-100: #f7f7f5;
-  --color-neutral-50: #ffffff;
-
-  /* ── Semantic ────────────────────────── */
-  --color-success: #188648;
-  --color-warning: #877900;
-  --color-error: #d64545;
-  --color-info: #2563eb;
-
-  /* ── Text roles ──────────────────────── */
-  --color-heading: #101828;
-  --color-body: #344054;
-  --color-muted: #667085;
-  --color-divider: #d0d5dd;
-
-  /* ── Spacing scale ───────────────────── */
-  --space-1: 4px;    /* tiny internal gaps          */
-  --space-2: 8px;    /* icon ↔ text, tiny details   */
-  --space-3: 12px;   /* tight component spacing     */
-  --space-4: 16px;   /* standard component spacing  */
-  --space-5: 20px;   /* medium separation           */
-  --space-6: 24px;   /* related groups              */
-  --space-7: 32px;   /* major sections              */
-  --space-8: 40px;   /* large separation            */
-  --space-9: 12px;   /* spacing between input fields*/
-
-  /* ── Layout ──────────────────────────── */
-  --padding-page:        20px;   /* phone edge padding          */
-  --padding-input:       16px;   /* inside input fields         */
-  --padding-box-top:     40px;   /* top padding of inner boxes  */
-  --padding-box-bottom:  20px;   /* bottom padding of inner boxes */
+  font-family: Arial, Helvetica, sans-serif;
 }
