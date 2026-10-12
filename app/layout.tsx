@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 const nippo = localFont({
   src: "./fonts/nippo/Nippo-Variable.woff2",
   variable: "--font-nippo",
@@ -41,6 +42,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col font-sans bg-twom-bg text-twom-body">
         <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );

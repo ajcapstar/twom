@@ -1,9 +1,10 @@
 "use client";
-import { useState, useRef, useLayoutEffect } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
+import { useGSAP } from "@gsap/react";
 import styles from "./Menu.module.css";
 
 gsap.registerPlugin(SplitText);
@@ -21,6 +22,7 @@ const OPEN_FULL = `M${SVG_W},${SVG_H} Q${SVG_CX},${SVG_H} 0,${SVG_H} L0,0 L${SVG
 export default function Menu() {
   const [isOpen, setIsOpen] = useState(false);
   const isAnimating = useRef(false);
+  const splitsCreated = useRef(false);
   const svgTlRef = useRef<gsap.core.Timeline | null>(null);
 
   // DOM refs
@@ -30,18 +32,34 @@ export default function Menu() {
   const menuBgRef = useRef<SVGPathElement>(null);
   const menuLogoRef = useRef<HTMLDivElement>(null);
 
-  // Collections (links + info items) — populated in useLayoutEffect
+  // Collections (links + info items)
   const linksRef = useRef<HTMLAnchorElement[]>([]);
   const infoItemsRef = useRef<Element[]>([]);
   const splitsRef = useRef<SplitText[]>([]);
 
-  // Setup: runs once after mount, before paint
-  useLayoutEffect(() => {
+  // useGSAP handles initial static setup, automatic cleanup, and provides contextSafe
+  const { contextSafe } = useGSAP(
+    () => {
+      if (menuBgRef.current) {
+        gsap.set(menuBgRef.current, { attr: { d: OPEN_HIDDEN } });
+      }
+
+      return () => {
+        splitsRef.current.forEach((s) => s.revert());
+        splitsRef.current = [];
+        splitsCreated.current = false;
+      };
+    },
+    { scope: menuRef }
+  );
+
+  // Wrap interaction functions in contextSafe for automatic timeline & tween cleanup
+  const openMenu = contextSafe(() => {
     const menuEl = menuRef.current;
     if (!menuEl) return;
 
-    const ctx = gsap.context(() => {
-      // same as document.querySelectorAll, scoped to the menu
+    // LAZY INITIALIZATION (Only runs on first interaction, safe for hydration)
+    if (!splitsCreated.current) {
       const menuLinks = Array.from(
         menuEl.querySelectorAll(`.${styles["menu-col-links"]} a`),
       ) as HTMLAnchorElement[];
@@ -54,10 +72,6 @@ export default function Menu() {
       linksRef.current = menuLinks;
       infoItemsRef.current = menuInfoItems;
 
-      // Initial SVG path
-      gsap.set(menuBgRef.current, { attr: { d: OPEN_HIDDEN } });
-
-      // Split text on each link
       const splits: SplitText[] = [];
       menuLinks.forEach((link) => {
         const split = new SplitText(link, {
@@ -65,21 +79,15 @@ export default function Menu() {
           charsClass: "char",
         });
         splits.push(split);
+        // Hide chars immediately so they don't flash
         gsap.set(split.chars, { opacity: 0, x: "750%" });
       });
       splitsRef.current = splits;
 
       gsap.set(menuInfoItems, { opacity: 0, y: 100 });
-    }, menuEl);
+      splitsCreated.current = true;
+    }
 
-    return () => {
-      splitsRef.current.forEach((s) => s.revert());
-      splitsRef.current = [];
-      ctx.revert();
-    };
-  }, []);
-
-  const openMenu = () => {
     const navToggleMenu = navToggleMenuRef.current;
     const navToggleClose = navToggleCloseRef.current;
     const menuBg = menuBgRef.current;
@@ -169,9 +177,9 @@ export default function Menu() {
       stagger: 0.01,
       delay: 0.45,
     });
-  };
+  });
 
-  const closeMenu = () => {
+  const closeMenu = contextSafe(() => {
     const navToggleClose = navToggleCloseRef.current;
     const navToggleMenu = navToggleMenuRef.current;
     const svgTl = svgTlRef.current;
@@ -192,13 +200,11 @@ export default function Menu() {
     });
 
     // Links: stagger-fade timed to when the shape sweeps past them.
-    // svgTl.reverse() runs for 1s total; shape is mid-screen ~0.3s in,
-    // so starting the fade at 0.25s creates the "shape eating the links" feel.
     gsap.to(links, {
       duration: 0.15,
       opacity: 0,
       ease: "power2.in",
-      stagger: { each: 0.06, from: "end" }, // bottom link first — matches shape receding upward
+      stagger: { each: 0.06, from: "end" },
       delay: 0.25,
     });
 
@@ -213,7 +219,7 @@ export default function Menu() {
 
     // Shape retracts (mirrored open path)
     svgTl.reverse();
-  };
+  });
 
   const toggleMenu = () => {
     if (isAnimating.current) return;
@@ -236,13 +242,15 @@ export default function Menu() {
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
+            width="24"
+            height="24"
             strokeWidth={1.5}
             stroke="currentColor"
           >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              d="M6 18 18 6M6 6l12 12"
+              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
             />
           </svg>
         </p>
@@ -251,13 +259,15 @@ export default function Menu() {
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
+            width="24"
+            height="24"
             strokeWidth={1.5}
             stroke="currentColor"
           >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+              d="M6 18 18 6M6 6l12 12"
             />
           </svg>
         </p>
@@ -292,12 +302,11 @@ export default function Menu() {
         </div>
 
         <div className={`${styles["menu-col"]} ${styles["menu-col-links"]}`}>
-          <Link href="/work">work</Link>
-          <Link href="/services">services</Link>
-          <Link href="/about">about</Link>
-          <Link href="/insights">insights</Link>
-          <Link href="/careers">careers</Link>
-          <Link href="/contact">contact</Link>
+          <Link href="/shop">Shop Collection</Link>
+          <Link href="/shop?category=tailoring">Tailoring</Link>
+          <Link href="/shop?category=essentials">Essentials</Link>
+          <Link href="/story">The World</Link>
+          <Link href="/account">Client Account</Link>
         </div>
       </div>
     </div>
