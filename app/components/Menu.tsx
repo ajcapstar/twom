@@ -50,7 +50,7 @@ export default function Menu() {
         splitsCreated.current = false;
       };
     },
-    { scope: menuRef }
+    { scope: menuRef },
   );
 
   // Wrap interaction functions in contextSafe for automatic timeline & tween cleanup
@@ -302,11 +302,21 @@ export default function Menu() {
         </div>
 
         <div className={`${styles["menu-col"]} ${styles["menu-col-links"]}`}>
-          <Link href="/shop">Shop Collection</Link>
-          <Link href="/shop?category=tailoring">Tailoring</Link>
-          <Link href="/shop?category=essentials">Essentials</Link>
-          <Link href="/story">The World</Link>
-          <Link href="/account">Client Account</Link>
+          <Link href="/products" onClick={toggleMenu}>
+            Shop Collection
+          </Link>
+          <Link href="/products?category=tailoring" onClick={toggleMenu}>
+            Tailoring
+          </Link>
+          <Link href="/products?category=essentials" onClick={toggleMenu}>
+            Essentials
+          </Link>
+          <Link href="/story" onClick={toggleMenu}>
+            The World
+          </Link>
+          <Link href="/account" onClick={toggleMenu}>
+            Client Account
+          </Link>
         </div>
       </div>
     </div>
