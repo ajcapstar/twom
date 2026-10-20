@@ -3,7 +3,7 @@ import { Product } from "../../lib/types";
 import ProductCard from "../components/ProductCard";
 
 // Next.js 16: Allow the server to fetch data before rendering
-export const instant = false;
+export const dynamic = "force-dynamic";
 
 export default async function ProductsPage() {
   // 1. Fetch products from Supabase
