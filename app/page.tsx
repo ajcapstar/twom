@@ -3,8 +3,7 @@ import ProductCard from "./components/ProductCard";
 import { supabase } from "../lib/supabase";
 import { Product } from "../lib/types";
 
-export const dynamic = "force-dynamic";
-
+export const instant = false;
 export default async function Home() {
   // Fetch products for the homepage grid
   const { data: products } = await supabase

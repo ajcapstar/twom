@@ -5,7 +5,7 @@ import { supabase } from "../../../lib/supabase";
 import { formatNaira } from "../../../lib/utils";
 import AddToCartButton from "../../components/AddToCartButton";
 
-export const dynamic = "force-dynamic";
+export const instant = false;
 
 // In Next.js 16, params is a Promise, so we must await it
 export default async function ProductPage({
