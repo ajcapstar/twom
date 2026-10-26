@@ -1,7 +1,7 @@
-export function formatNaira(amountInKobo: number) {
+export function formatNaira(amountInKobo: number, showDecimals: boolean = true) {
   return new Intl.NumberFormat("en-NG", {
     style: "currency",
     currency: "NGN",
-    minimumFractionDigits: 0, // Hides the .00 if you don't want it
+    minimumFractionDigits: showDecimals ? 2 : 0,
   }).format(amountInKobo / 100);
-}
+}

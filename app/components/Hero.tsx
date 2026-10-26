@@ -19,7 +19,7 @@ export default async function Hero() {
   };
 
   return (
-    <section className="relative h-[70svh] w-full overflow-hidden flex flex-col justify-end px-6 pb-12 md:px-12 md:pb-16">
+    <section className="relative h-[90svh] w-full overflow-hidden flex flex-col justify-end px-6 pb-12 md:px-12 md:pb-16">
       {/* Video Background */}
       <video
         autoPlay
