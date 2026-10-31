@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Product } from "../../lib/types";
-import { formatNaira } from "../../lib/utils";
+import { Product } from "@/lib/types";
+import { formatNaira } from "@/lib/utils";
 
 interface ProductCardProps {
   product: Product;
@@ -21,7 +21,6 @@ export default function ProductCard({ product, isNew }: ProductCardProps) {
             src={product.image_url}
             alt={product.name}
             fill
-            priority={true}
             sizes="(max-width: 768px) 70vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
           />
@@ -45,7 +44,7 @@ export default function ProductCard({ product, isNew }: ProductCardProps) {
           {product.name}
         </h3>
         <span className="text-xs md:text-sm text-neutral-500 font-normal">
-          {formatNaira(product.price)} NGN
+          {formatNaira(product.price)}
         </span>
       </div>
     </Link>

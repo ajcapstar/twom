@@ -1,17 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCartStore } from "../../lib/store";
 import { formatNaira } from "../../lib/utils";
 
+const emptySubscribe = () => () => {};
+
 export default function CartPage() {
-  // 1. The Hydration Fix
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  // 1. Hydration-safe client mounting check without cascading renders
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  );
 
   // 2. Pull data from Zustand
   const { items, updateQuantity, removeItem } = useCartStore();
@@ -19,7 +22,7 @@ export default function CartPage() {
   // 3. Calculate subtotal
   const subtotal = items.reduce(
     (total, item) => total + item.price * item.quantity,
-    0,
+    0
   );
 
   // Don't render the cart contents until mounted to avoid hydration errors
@@ -66,12 +69,18 @@ export default function CartPage() {
               >
                 {/* Image */}
                 <div className="relative w-24 h-32 md:w-32 md:h-40 bg-zinc-100 shrink-0">
-                  <Image
-                    src={item.image_url}
-                    alt={item.name}
-                    fill
-                    className="object-cover object-center"
-                  />
+                  {item.image_url ? (
+                    <Image
+                      src={item.image_url}
+                      alt={item.name}
+                      fill
+                      className="object-cover object-center"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-xs uppercase tracking-widest text-twom-muted">
+                      No Image
+                    </div>
+                  )}
                 </div>
 
                 {/* Details */}
@@ -81,7 +90,7 @@ export default function CartPage() {
                       <h3 className="font-zodiak text-lg md:text-xl text-twom-title">
                         {item.name}
                       </h3>
-                      <p className="font-medium text-twom-title hidden md:block">
+                      <p className="font-medium text-twom-title">
                         {formatNaira(item.price * item.quantity)}
                       </p>
                     </div>

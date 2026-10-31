@@ -47,8 +47,12 @@ export default function AdminLogin() {
         className="w-full max-w-md bg-white p-8 border border-zinc-200 shadow-sm"
         noValidate
       >
-        <h1 className="font-zodiak text-3xl text-twom-title mb-2">Admin Login</h1>
-        <p className="text-twom-muted text-sm mb-6">Restricted administrative access.</p>
+        <h1 className="font-zodiak text-3xl text-twom-title mb-2">
+          Admin Login
+        </h1>
+        <p className="text-twom-muted text-sm mb-6">
+          Restricted administrative access.
+        </p>
 
         {error && (
           <div

@@ -1,5 +1,5 @@
-import Hero from "./components/Hero";
-import ProductCard from "./components/ProductCard";
+import Hero from "../components/Hero";
+import ProductCard from "../components/ProductCard";
 import { supabase } from "../lib/supabase";
 import { Product } from "../lib/types";
 
@@ -43,7 +43,10 @@ export default async function Home() {
       </div>
 
       {/* Editorial Product Grid Section */}
-      <section id="collection" className="max-w-7xl mx-auto px-6 py-16 md:py-24">
+      <section
+        id="collection"
+        className="max-w-7xl mx-auto px-6 py-16 md:py-24"
+      >
         <div className="flex justify-between items-end mb-8 md:mb-16">
           <div>
             <span className="text-xs uppercase tracking-[0.2em] text-twom-muted">

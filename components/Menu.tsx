@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
@@ -53,10 +53,11 @@ export default function Menu() {
     { scope: menuRef },
   );
 
-  // Wrap interaction functions in contextSafe for automatic timeline & tween cleanup
-  const openMenu = contextSafe(() => {
-    const menuEl = menuRef.current;
-    if (!menuEl) return;
+  // Wrap interaction functions in useCallback so refs are only accessed in event callbacks
+  const openMenu = useCallback(() => {
+    contextSafe(() => {
+      const menuEl = menuRef.current;
+      if (!menuEl) return;
 
     // LAZY INITIALIZATION (Only runs on first interaction, safe for hydration)
     if (!splitsCreated.current) {
@@ -177,56 +178,59 @@ export default function Menu() {
       stagger: 0.01,
       delay: 0.45,
     });
-  });
+    })();
+  }, [contextSafe]);
 
-  const closeMenu = contextSafe(() => {
-    const navToggleClose = navToggleCloseRef.current;
-    const navToggleMenu = navToggleMenuRef.current;
-    const svgTl = svgTlRef.current;
-    const links = linksRef.current;
+  const closeMenu = useCallback(() => {
+    contextSafe(() => {
+      const navToggleClose = navToggleCloseRef.current;
+      const navToggleMenu = navToggleMenuRef.current;
+      const svgTl = svgTlRef.current;
+      const links = linksRef.current;
 
-    if (!navToggleClose || !navToggleMenu || !svgTl) return;
+      if (!navToggleClose || !navToggleMenu || !svgTl) return;
 
-    // Logo + info: instant hide (they're small, no value in animating)
-    gsap.to(menuLogoRef.current, {
-      duration: 1,
-      opacity: 0,
-      ease: "power2.in",
-    });
-    gsap.to(infoItemsRef.current, {
-      duration: 0.6,
-      opacity: 0,
-      ease: "power2.in",
-    });
+      // Logo + info: instant hide (they're small, no value in animating)
+      gsap.to(menuLogoRef.current, {
+        duration: 1,
+        opacity: 0,
+        ease: "power2.in",
+      });
+      gsap.to(infoItemsRef.current, {
+        duration: 0.6,
+        opacity: 0,
+        ease: "power2.in",
+      });
 
-    // Links: stagger-fade timed to when the shape sweeps past them.
-    gsap.to(links, {
-      duration: 0.15,
-      opacity: 0,
-      ease: "power2.in",
-      stagger: { each: 0.06, from: "end" },
-      delay: 0.25,
-    });
+      // Links: stagger-fade timed to when the shape sweeps past them.
+      gsap.to(links, {
+        duration: 0.15,
+        opacity: 0,
+        ease: "power2.in",
+        stagger: { each: 0.06, from: "end" },
+        delay: 0.25,
+      });
 
-    // Toggle icons
-    gsap.to(navToggleClose, { duration: 0.25, opacity: 0, ease: "none" });
-    gsap.to(navToggleMenu, {
-      duration: 0.25,
-      opacity: 1,
-      ease: "none",
-      delay: 0.2,
-    });
+      // Toggle icons
+      gsap.to(navToggleClose, { duration: 0.25, opacity: 0, ease: "none" });
+      gsap.to(navToggleMenu, {
+        duration: 0.25,
+        opacity: 1,
+        ease: "none",
+        delay: 0.2,
+      });
 
-    // Shape retracts (mirrored open path)
-    svgTl.reverse();
-  });
+      // Shape retracts (mirrored open path)
+      svgTl.reverse();
+    })();
+  }, [contextSafe]);
 
-  const toggleMenu = () => {
+  const toggleMenu = useCallback(() => {
     if (isAnimating.current) return;
     isAnimating.current = true;
     if (isOpen) closeMenu();
     else openMenu();
-  };
+  }, [isOpen, closeMenu, openMenu]);
 
   return (
     <div className={styles.nav}>
@@ -310,6 +314,9 @@ export default function Menu() {
           </Link>
           <Link href="/products?category=essentials" onClick={toggleMenu}>
             Essentials
+          </Link>
+          <Link href="/cart" onClick={toggleMenu}>
+            Your Cart
           </Link>
           <Link href="/story" onClick={toggleMenu}>
             The World

@@ -1,22 +1,47 @@
-import { supabase } from "../../lib/supabase";
-import { Product } from "../../lib/types";
-import ProductCard from "../components/ProductCard";
+import Link from "next/link";
+import { supabase } from "@/lib/supabase";
+import { Product } from "@/lib/types";
+import ProductCard from "@/components/ProductCard";
 
-// Next.js 16: Allow the server to fetch data before rendering
-export const instant = false;
-export default async function ProductsPage() {
-  // 1. Fetch products from Supabase
-  const { data: products, error } = await supabase
+export default async function ProductsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string }>;
+}) {
+  const { category } = await searchParams;
+
+  // Build the query
+  let query = supabase
     .from("products")
     .select("*")
-    .eq("is_active", true)
-    .order("created_at", { ascending: false });
+    .eq("is_active", true);
 
-  // 2. Handle empty state or errors gracefully
+  // If there's a category in the URL, filter by it case-insensitively
+  if (category) {
+    query = query.ilike("category", category);
+  }
+
+  const { data: products, error } = await query.order("created_at", {
+    ascending: false,
+  });
+
+  // Handle empty state or errors gracefully
   if (error || !products || products.length === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-twom-bg text-twom-title">
-        <p>No products available at the moment.</p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-twom-bg text-twom-title gap-4 px-6">
+        <p className="text-twom-muted">
+          {category
+            ? `No pieces found under "${category}".`
+            : "No products available at the moment."}
+        </p>
+        {category && (
+          <Link
+            href="/products"
+            className="text-xs uppercase tracking-widest text-twom-title underline underline-offset-4 hover:opacity-70 transition-opacity"
+          >
+            ← View All Pieces
+          </Link>
+        )}
       </div>
     );
   }
@@ -30,13 +55,23 @@ export default async function ProductsPage() {
             <span className="text-xs uppercase tracking-[0.2em] text-twom-muted">
               The Collection
             </span>
-            <h1 className="font-zodiak text-4xl md:text-6xl text-twom-title mt-2">
-              Shop All
+            <h1 className="font-zodiak text-4xl md:text-6xl text-twom-title mt-2 capitalize">
+              {category ? category : "Shop All"}
             </h1>
           </div>
-          <span className="text-xs uppercase tracking-widest text-twom-muted">
-            Showing {products.length} Pieces
-          </span>
+          <div className="flex items-center gap-4">
+            {category && (
+              <Link
+                href="/products"
+                className="text-xs uppercase tracking-widest text-twom-muted hover:text-twom-title underline underline-offset-4 transition-colors"
+              >
+                Clear Filter ✕
+              </Link>
+            )}
+            <span className="text-xs uppercase tracking-widest text-twom-muted">
+              Showing {products.length} {products.length === 1 ? "Piece" : "Pieces"}
+            </span>
+          </div>
         </div>
 
         {/* Grid */}

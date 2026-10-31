@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { supabase } from "../../lib/supabase";
+import { supabase } from "@/lib/supabase";
 
 export default async function Hero() {
   // 1. Fetch data right inside the component
@@ -11,7 +11,7 @@ export default async function Hero() {
 
   // 2. Fallback logic (protects against empty DB or network failure)
   const hero = heroData || {
-    headline: "Find your fitf.",
+    headline: "Find your fit.",
     button_text: "Explore styles",
     button_link: "/products",
     video_url: "/hero-video.mp4",

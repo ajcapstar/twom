@@ -1,11 +1,10 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { supabase } from "../../../lib/supabase";
-import { formatNaira } from "../../../lib/utils";
-import AddToCartButton from "../../components/AddToCartButton";
-
-export const instant = false;
+import { supabase } from "@/lib/supabase";
+import { formatNaira } from "@/lib/utils";
+import { Product } from "@/lib/types";
+import AddToCartButton from "@/components/AddToCartButton";
 
 // In Next.js 16, params is a Promise, so we must await it
 export default async function ProductPage({
@@ -34,14 +33,20 @@ export default async function ProductPage({
         {/* Left Column: Image */}
         <div className="w-full md:w-1/2">
           <div className="relative aspect-3/4 w-full overflow-hidden bg-zinc-100">
-            <Image
-              src={product.image_url}
-              alt={product.name}
-              fill
-              priority
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover object-center"
-            />
+            {product.image_url ? (
+              <Image
+                src={product.image_url}
+                alt={product.name}
+                fill
+                priority
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover object-center"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-xs uppercase tracking-widest text-twom-muted">
+                No Image
+              </div>
+            )}
           </div>
         </div>
 
@@ -70,7 +75,18 @@ export default async function ProductPage({
           </p>
 
           {/* Add to Cart Button */}
-          <AddToCartButton product={product} />
+          <div className="mt-8">
+            {product.stock_quantity > 0 ? (
+              <AddToCartButton product={product as Product} />
+            ) : (
+              <button
+                disabled
+                className="w-full bg-zinc-300 text-zinc-500 py-4 text-xs uppercase tracking-[0.2em] font-[family-name:var(--font-nippo)] cursor-not-allowed"
+              >
+                Out of Stock
+              </button>
+            )}
+          </div>
 
           {/* Stock Check */}
           <p className="text-xs text-twom-muted mt-4 text-center">
