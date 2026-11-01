@@ -6,6 +6,8 @@ import { formatNaira } from "@/lib/utils";
 import { Product } from "@/lib/types";
 import AddToCartButton from "@/components/AddToCartButton";
 
+export const instant = false;
+
 // In Next.js 16, params is a Promise, so we must await it
 export default async function ProductPage({
   params,

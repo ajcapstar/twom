@@ -3,6 +3,8 @@ import { supabase } from "@/lib/supabase";
 import { Product } from "@/lib/types";
 import ProductCard from "@/components/ProductCard";
 
+export const instant = false;
+
 export default async function ProductsPage({
   searchParams,
 }: {
