@@ -87,6 +87,15 @@ export async function POST(req: Request) {
           { status: 500 }
         );
       }
+
+      // 7. Atomically deduct inventory stock for all items in the order
+      const { error: stockError } = await supabaseAdmin.rpc("deduct_order_stock", {
+        order_id_param: orderId,
+      });
+
+      if (stockError) {
+        console.error(`Failed to deduct stock for order ${orderId}:`, stockError);
+      }
     }
 
     return NextResponse.json({ received: true }, { status: 200 });

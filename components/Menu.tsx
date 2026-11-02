@@ -309,10 +309,16 @@ export default function Menu() {
           <Link href="/products" onClick={toggleMenu}>
             Shop Collection
           </Link>
-          <Link href="/products?category=tailoring" onClick={toggleMenu}>
+          <Link href="/products?category=Outerwear" onClick={toggleMenu}>
+            Outerwear
+          </Link>
+          <Link href="/products?category=Tailoring" onClick={toggleMenu}>
             Tailoring
           </Link>
-          <Link href="/products?category=essentials" onClick={toggleMenu}>
+          <Link href="/products?category=Knitwear" onClick={toggleMenu}>
+            Knitwear
+          </Link>
+          <Link href="/products?category=Essentials" onClick={toggleMenu}>
             Essentials
           </Link>
           <Link href="/cart" onClick={toggleMenu}>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { addProduct } from "@/app/admin/(dashboard)/actions";
+import { PRODUCT_CATEGORIES } from "@/lib/types";
 
 export default function AddProductForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -54,14 +55,28 @@ export default function AddProductForm() {
           />
         </div>
         <div>
-          <label className="block text-xs uppercase tracking-wider text-twom-muted mb-2">
+          <label
+            htmlFor="category-select"
+            className="block text-xs uppercase tracking-wider text-twom-muted mb-2"
+          >
             Category *
           </label>
-          <input
+          <select
+            id="category-select"
             required
             name="category"
-            className="w-full p-3 border border-zinc-300 focus:outline-none focus:border-twom-title"
-          />
+            defaultValue=""
+            className="w-full p-3 border border-zinc-300 focus:outline-none focus:border-twom-title bg-white cursor-pointer"
+          >
+            <option value="" disabled>
+              Select a category
+            </option>
+            {PRODUCT_CATEGORIES.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 

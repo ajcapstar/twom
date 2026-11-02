@@ -2,7 +2,7 @@
 
 import { createClient } from "@/lib/supabase-server";
 import { revalidatePath } from "next/cache";
-import type { OrderStatus } from "@/lib/types";
+import { type OrderStatus, PRODUCT_CATEGORIES, type ProductCategory } from "@/lib/types";
 
 export async function addProduct(formData: FormData) {
   const supabase = await createClient();
@@ -29,6 +29,11 @@ export async function addProduct(formData: FormData) {
 
   if (!name || !category || !priceString || !imageFile || imageFile.size === 0) {
     return { error: "Missing required fields or image." };
+  }
+
+  // Validate category against allowed list
+  if (!PRODUCT_CATEGORIES.includes(category as ProductCategory)) {
+    return { error: `Invalid category selected: ${category}` };
   }
 
   // 3. Convert Naira to Kobo (Multiply by 100 with rounding to prevent float precision issues)

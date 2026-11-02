@@ -95,6 +95,36 @@ as $$
   );
 $$;
 
+-- Decrement individual product stock
+create or replace function public.decrement_stock(product_id uuid, quantity_to_deduct integer)
+returns void 
+language plpgsql 
+security definer
+set search_path = ''
+as $$
+begin
+  update public.products
+  set stock_quantity = greatest(0, stock_quantity - quantity_to_deduct)
+  where id = product_id;
+end;
+$$;
+
+-- Bulk order stock deduction: Updates stock for all items in an order in 1 atomic query
+create or replace function public.deduct_order_stock(order_id_param uuid)
+returns void 
+language plpgsql 
+security definer
+set search_path = ''
+as $$
+begin
+  update public.products p
+  set stock_quantity = greatest(0, p.stock_quantity - oi.quantity)
+  from public.order_items oi
+  where oi.order_id = order_id_param
+    and oi.product_id = p.id;
+end;
+$$;
+
 -- ==========================================
 -- 4. ENABLE ROW LEVEL SECURITY (RLS)
 -- ==========================================
@@ -154,7 +184,7 @@ create policy "Users can view own profile"
 
 create policy "Admins can view all profiles"
   on public.profiles for select
-  to authenticated
+  to authenticated 
   using (public.is_admin());
 
 -- ORDERS
