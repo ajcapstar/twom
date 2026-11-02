@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase-server";
 import { redirect } from "next/navigation";
-import AddProductForm from "@/components/AddProductForm"; // Import the form
+import Link from "next/link";
+import AddProductForm from "@/components/AddProductForm";
 
 export const instant = false;
 
@@ -21,7 +22,7 @@ export default async function AdminDashboard() {
     <div className="min-h-screen bg-twom-bg pt-28 pb-24 px-6 md:px-12">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8 pb-6 border-b border-zinc-200">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-zinc-200">
           <div>
             <h1 className="font-zodiak text-4xl text-twom-title mb-1">
               Admin Dashboard
@@ -31,14 +32,23 @@ export default async function AdminDashboard() {
             </p>
           </div>
 
-          <form action={handleSignOut}>
-            <button
-              type="submit"
-              className="px-4 py-2 text-xs uppercase tracking-wider text-zinc-600 border border-zinc-300 hover:text-black hover:border-black transition-colors"
+          <div className="flex items-center gap-3">
+            <Link
+              href="/admin/orders"
+              className="px-4 py-2 text-xs uppercase tracking-wider text-twom-title border border-twom-title hover:bg-twom-title hover:text-white transition-colors"
             >
-              Log Out
-            </button>
-          </form>
+              Manage Orders →
+            </Link>
+
+            <form action={handleSignOut}>
+              <button
+                type="submit"
+                className="px-4 py-2 text-xs uppercase tracking-wider text-zinc-600 border border-zinc-300 hover:text-black hover:border-black transition-colors cursor-pointer"
+              >
+                Log Out
+              </button>
+            </form>
+          </div>
         </div>
 
         {/* The Product Form */}

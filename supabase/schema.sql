@@ -59,7 +59,7 @@ create table public.orders (
   customer_email text not null,
   shipping_address text not null,
   total_amount integer not null check (total_amount >= 0), -- In Kobo
-  status text not null default 'pending' check (status in ('pending', 'paid', 'failed', 'cancelled')),
+  status text not null default 'pending' check (status in ('pending', 'paid', 'shipped', 'cancelled', 'failed')),
   payment_reference text,
   payment_channel text,
   paid_at timestamptz,

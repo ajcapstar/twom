@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase-server";
 import { revalidatePath } from "next/cache";
+import type { OrderStatus } from "@/lib/types";
 
 export async function addProduct(formData: FormData) {
   const supabase = await createClient();
@@ -74,5 +75,41 @@ export async function addProduct(formData: FormData) {
   revalidatePath("/");
   revalidatePath("/products");
 
+  return { success: true };
+}
+
+const ALLOWED_STATUSES: OrderStatus[] = ["pending", "paid", "shipped", "cancelled", "failed"];
+
+export async function updateOrderStatus(orderId: string, newStatus: string) {
+  if (!ALLOWED_STATUSES.includes(newStatus as OrderStatus)) {
+    return { error: `Invalid order status: ${newStatus}` };
+  }
+
+  const supabase = await createClient();
+
+  // 1. Verify Admin (Zero-Trust)
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: "Unauthorized" };
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  if (profile?.role !== "admin") return { error: "Forbidden: Admin access required." };
+
+  // 2. Update the order
+  const { error } = await supabase
+    .from("orders")
+    .update({ status: newStatus })
+    .eq("id", orderId);
+
+  if (error) return { error: error.message };
+
+  // 3. Revalidate the admin orders page so the UI updates
+  revalidatePath("/admin/orders");
   return { success: true };
 }
