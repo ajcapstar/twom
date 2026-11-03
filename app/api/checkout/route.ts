@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { sendOrderConfirmation } from "@/lib/email";
 
 interface CheckoutRequestBody {
   customer: {
@@ -249,6 +250,9 @@ export async function POST(req: Request) {
     await supabaseAdmin.rpc("deduct_order_stock", {
       order_id_param: order.id,
     });
+
+    // Send confirmation emails in local test mode
+    await sendOrderConfirmation(order.id);
 
     return NextResponse.json({
       orderId: order.id,

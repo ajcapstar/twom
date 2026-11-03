@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import crypto from "crypto";
+import { sendOrderConfirmation } from "@/lib/email";
 
 export async function POST(req: Request) {
   try {
@@ -96,6 +97,9 @@ export async function POST(req: Request) {
       if (stockError) {
         console.error(`Failed to deduct stock for order ${orderId}:`, stockError);
       }
+
+      // 8. Dispatch customer acquisition confirmation and admin alert emails
+      await sendOrderConfirmation(orderId);
     }
 
     return NextResponse.json({ received: true }, { status: 200 });
