@@ -1,4 +1,8 @@
 export const PRODUCT_CATEGORIES = [
+  "Tees & Tanks",
+  "Pants",
+  "Hoodies",
+  "Accessories",
   "Outerwear",
   "Tailoring",
   "Essentials",

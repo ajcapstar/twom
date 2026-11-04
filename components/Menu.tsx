@@ -236,7 +236,7 @@ export default function Menu() {
     <div className={styles.nav}>
       <div className={styles["nav-logo"]}>
         <Link href="/">
-          <Image src="/Twom.png" alt="Logo" width={64} height={64} />
+          <Image src="/TWOM.png" alt="Logo" width={64} height={64} />
         </Link>
       </div>
 
@@ -292,7 +292,7 @@ export default function Menu() {
 
         <div ref={menuLogoRef} className={styles["menu-logo"]}>
           <Link href="/">
-            <Image src="/Twom.png" alt="Logo" width={64} height={64} />
+            <Image src="/TWOM.png" alt="Logo" width={64} height={64} />
           </Link>
         </div>
 
