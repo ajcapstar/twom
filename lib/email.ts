@@ -2,7 +2,11 @@ import { Resend } from "resend";
 import { supabaseAdmin } from "./supabase-admin";
 import { formatNaira } from "./utils";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function getResendClient(): Resend | null {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return null;
+  return new Resend(apiKey);
+}
 
 // Admin recipient for new order alerts
 const ADMIN_NOTIFICATION_EMAIL = "akpemekelly02@gmail.com";
@@ -29,7 +33,8 @@ interface OrderDetails {
 }
 
 export async function sendOrderConfirmation(orderId: string) {
-  if (!process.env.RESEND_API_KEY) {
+  const resend = getResendClient();
+  if (!resend) {
     console.warn("[Email] RESEND_API_KEY is not configured. Skipping email notifications.");
     return;
   }
