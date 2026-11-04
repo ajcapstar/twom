@@ -14,8 +14,10 @@ export default async function Hero() {
     headline: "Find your fit.",
     button_text: "Explore styles",
     button_link: "/products",
-    video_url: "/hero-video.mp4",
-    poster_url: "",
+    video_url:
+      "https://wygcegdwyaajxzjkczis.supabase.co/storage/v1/object/public/hero-videos/hero/main/video.mp4",
+    poster_url:
+      "https://wygcegdwyaajxzjkczis.supabase.co/storage/v1/object/public/hero-posters/hero/main/poster.jpeg",
   };
 
   return (
@@ -26,6 +28,7 @@ export default async function Hero() {
         muted
         loop
         playsInline
+        preload="auto"
         poster={hero.poster_url}
         className="absolute inset-0 z-0 w-full h-full object-cover brightness-90"
       >
