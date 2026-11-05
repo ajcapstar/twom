@@ -1,10 +1,11 @@
 "use client";
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
 import { useGSAP } from "@gsap/react";
+import { useCartStore } from "@/lib/store";
 import styles from "./Menu.module.css";
 
 gsap.registerPlugin(SplitText);
@@ -21,9 +22,20 @@ const OPEN_FULL = `M${SVG_W},${SVG_H} Q${SVG_CX},${SVG_H} 0,${SVG_H} L0,0 L${SVG
 
 export default function Menu() {
   const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const isAnimating = useRef(false);
   const splitsCreated = useRef(false);
   const svgTlRef = useRef<gsap.core.Timeline | null>(null);
+
+  // Cart state for the top-right cart indicator
+  const items = useCartStore((state) => state.items);
+  const totalCount = mounted
+    ? items.reduce((acc, item) => acc + item.quantity, 0)
+    : 0;
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // DOM refs
   const menuRef = useRef<HTMLDivElement>(null);
@@ -234,13 +246,14 @@ export default function Menu() {
 
   return (
     <div className={styles.nav}>
-      <div className={styles["nav-logo"]}>
-        <Link href="/">
-          <Image src="/TWOM.png" alt="Logo" width={64} height={64} />
-        </Link>
-      </div>
-
-      <div className={styles["nav-toggle"]} onClick={toggleMenu}>
+      {/* 1. Toggle Menu on the Left */}
+      <div
+        className={styles["nav-toggle"]}
+        onClick={toggleMenu}
+        aria-label="Toggle navigation menu"
+        role="button"
+        tabIndex={0}
+      >
         <p ref={navToggleMenuRef} className={styles["nav-toggle-menu"]}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -276,6 +289,55 @@ export default function Menu() {
           </svg>
         </p>
       </div>
+
+      {/* 2. Brand Logo in the Center */}
+      <div className={styles["nav-logo"]}>
+        <Link href="/">
+          <Image src="/TWOM.png" alt="Logo" width={64} height={64} priority />
+        </Link>
+      </div>
+
+      {/* 3. Shopping Cart on the Extreme Right */}
+      <Link
+        href="/cart"
+        className={styles["nav-cart"]}
+        aria-label="View Shopping Cart"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          width="24"
+          height="24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"
+          />
+          <line
+            x1="3"
+            y1="6"
+            x2="21"
+            y2="6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M16 10a4 4 0 0 1-8 0"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+
+        {totalCount > 0 && (
+          <span className={styles["cart-badge"]}>
+            {totalCount}
+          </span>
+        )}
+      </Link>
 
       <div
         ref={menuRef}
