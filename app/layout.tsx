@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import CartDrawer from "../components/CartDrawer";
+import QuickBuySheet from "../components/QuickBuySheet";
 const nippo = localFont({
   src: "./fonts/nippo/Nippo-Variable.woff2",
   variable: "--font-nippo",
@@ -41,6 +43,8 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col font-sans bg-twom-bg text-twom-body">
         <Navbar />
+        <CartDrawer />
+        <QuickBuySheet />
         {children}
         <Footer />
       </body>

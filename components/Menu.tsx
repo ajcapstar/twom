@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
 import { useGSAP } from "@gsap/react";
 import { useCartStore } from "@/lib/store";
+import { useUIStore } from "@/lib/ui-store";
 import styles from "./Menu.module.css";
 
 gsap.registerPlugin(SplitText);
@@ -29,6 +30,7 @@ export default function Menu() {
 
   // Cart state for the top-right cart indicator
   const items = useCartStore((state) => state.items);
+  const openCart = useUIStore((state) => state.openCart);
   const totalCount = mounted
     ? items.reduce((acc, item) => acc + item.quantity, 0)
     : 0;
@@ -298,10 +300,11 @@ export default function Menu() {
       </div>
 
       {/* 3. Shopping Cart on the Extreme Right */}
-      <Link
-        href="/cart"
+      <button
+        type="button"
+        onClick={openCart}
         className={styles["nav-cart"]}
-        aria-label="View Shopping Cart"
+        aria-label="Open Shopping Bag"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -337,7 +340,7 @@ export default function Menu() {
             {totalCount}
           </span>
         )}
-      </Link>
+      </button>
 
       <div
         ref={menuRef}

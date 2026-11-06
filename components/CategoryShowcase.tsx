@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Product } from "@/lib/types";
 import { formatNaira } from "@/lib/utils";
 import { useCartStore } from "@/lib/store";
+import { useUIStore } from "@/lib/ui-store";
 
 interface CategoryShowcaseProps {
   dbProducts: Product[];
@@ -284,12 +285,13 @@ export default function CategoryShowcase({
   };
 
   const displayedItems = getDisplayedItems();
+  const openQuickBuy = useUIStore((state) => state.openQuickBuy);
 
   const handleQuickAdd = (e: React.MouseEvent, item: ShowcaseItem) => {
     e.preventDefault();
     e.stopPropagation();
 
-    addItem({
+    openQuickBuy({
       id: item.id,
       sku: item.sku,
       slug: item.slug,
@@ -302,11 +304,6 @@ export default function CategoryShowcase({
       is_active: item.is_active,
       created_at: item.created_at,
     });
-
-    setAddedId(item.id);
-    setTimeout(() => {
-      setAddedId((curr) => (curr === item.id ? null : curr));
-    }, 1500);
   };
 
   return (
@@ -342,25 +339,27 @@ export default function CategoryShowcase({
               key={item.id}
               className="w-[72vw] min-w-[72vw] sm:w-[46vw] sm:min-w-[46vw] md:w-[calc(25%-18px)] md:min-w-[calc(25%-18px)] shrink-0 snap-start flex flex-col group"
             >
-              <Link
-                href={`/products/${item.slug || item.id}`}
-                className="relative aspect-3/4 w-full overflow-hidden bg-zinc-100 mb-3 block"
-              >
-                <Image
-                  src={item.image_url || "/TWOM.png"}
-                  alt={item.name}
-                  fill
-                  sizes="(max-width: 640px) 72vw, (max-width: 1024px) 46vw, 25vw"
-                  className={`transition-transform duration-700 ease-out group-hover:scale-105 ${
-                    isBrandPlaceholder
-                      ? "object-contain p-10 drop-shadow-xs"
-                      : "object-cover object-center"
-                  }`}
-                />
+              <div className="relative aspect-3/4 w-full overflow-hidden bg-zinc-100 mb-3">
+                <Link
+                  href={`/products/${item.slug || item.id}`}
+                  className="relative block w-full h-full cursor-pointer"
+                >
+                  <Image
+                    src={item.image_url || "/TWOM.png"}
+                    alt={item.name}
+                    fill
+                    sizes="(max-width: 640px) 72vw, (max-width: 1024px) 46vw, 25vw"
+                    className={`transition-transform duration-700 ease-out group-hover:scale-105 ${
+                      isBrandPlaceholder
+                        ? "object-contain p-10 drop-shadow-xs"
+                        : "object-cover object-center"
+                    }`}
+                  />
+                </Link>
 
                 {/* Vertical Red Sale / Discount Badge (Like screenshot) */}
                 {item.saveBadge && (
-                  <div className="absolute top-3 right-0 z-10 bg-[#c92a2a] text-white text-[9px] font-bold tracking-widest px-1.5 py-2.5 [writing-mode:vertical-rl] select-none uppercase font-mono shadow-xs">
+                  <div className="pointer-events-none absolute top-3 right-0 z-10 bg-[#c92a2a] text-white text-[9px] font-bold tracking-widest px-1.5 py-2.5 [writing-mode:vertical-rl] select-none uppercase font-mono shadow-xs">
                     {item.saveBadge}
                   </div>
                 )}
@@ -408,7 +407,7 @@ export default function CategoryShowcase({
                     </svg>
                   )}
                 </button>
-              </Link>
+              </div>
 
               {/* Product Details */}
               <div className="flex flex-col gap-1">
