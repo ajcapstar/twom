@@ -267,12 +267,11 @@ export default function Menu() {
   return (
     <div className={styles.nav}>
       {/* 1. Toggle Menu on the Left */}
-      <div
+      <button
+        type="button"
         className={styles["nav-toggle"]}
         onClick={toggleMenu}
         aria-label="Toggle navigation menu"
-        role="button"
-        tabIndex={0}
       >
         <p ref={navToggleMenuRef} className={styles["nav-toggle-menu"]}>
           <svg
@@ -283,6 +282,7 @@ export default function Menu() {
             height="24"
             strokeWidth={1.5}
             stroke="currentColor"
+            style={{ pointerEvents: "none" }}
           >
             <path
               strokeLinecap="round"
@@ -300,6 +300,7 @@ export default function Menu() {
             height="24"
             strokeWidth={1.5}
             stroke="currentColor"
+            style={{ pointerEvents: "none" }}
           >
             <path
               strokeLinecap="round"
@@ -308,7 +309,7 @@ export default function Menu() {
             />
           </svg>
         </p>
-      </div>
+      </button>
 
       {/* 2. Brand Logo in the Center */}
       <div className={styles["nav-logo"]}>
@@ -332,6 +333,7 @@ export default function Menu() {
           height="24"
           strokeWidth={1.5}
           stroke="currentColor"
+          style={{ pointerEvents: "none" }}
         >
           <path
             strokeLinecap="round"

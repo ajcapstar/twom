@@ -8,6 +8,7 @@ import { useGSAP } from "@gsap/react";
 import { useUIStore } from "@/lib/ui-store";
 import { useCartStore } from "@/lib/store";
 import { formatNaira } from "@/lib/utils";
+import { Product } from "@/lib/types";
 
 const SIZES = ["XS", "S", "M", "L", "XL", "XXL"] as const;
 
@@ -27,22 +28,22 @@ export default function QuickBuySheet() {
 
   const isOpen = Boolean(quickBuyProduct);
   const [shouldRender, setShouldRender] = useState(isOpen);
-  const lastProductRef = useRef(quickBuyProduct);
+  const [activeProduct, setActiveProduct] = useState<Product | null>(quickBuyProduct);
+  const [prevProductId, setPrevProductId] = useState<string | null>(
+    quickBuyProduct?.id || null,
+  );
 
-  if (quickBuyProduct) {
-    lastProductRef.current = quickBuyProduct;
-  }
-  const activeProduct = quickBuyProduct || lastProductRef.current;
-
-  if (isOpen && !shouldRender) {
+  // Sync state during render when a new product opens
+  if (quickBuyProduct && quickBuyProduct.id !== prevProductId) {
+    setPrevProductId(quickBuyProduct.id);
+    setActiveProduct(quickBuyProduct);
+    setSelectedSize("S");
+    if (!shouldRender) {
+      setShouldRender(true);
+    }
+  } else if (isOpen && !shouldRender) {
     setShouldRender(true);
   }
-
-  useEffect(() => {
-    if (isOpen) {
-      setSelectedSize("S"); // Reset to default size when a new product opens
-    }
-  }, [isOpen]);
 
   // Lock background scroll when Quick Buy sheet is open
   useEffect(() => {
@@ -136,7 +137,7 @@ export default function QuickBuySheet() {
   const dynamicSku = `${activeProduct.sku || "TWOM"}-${selectedSize}`;
 
   return (
-    <div className="fixed inset-0 z-[110] flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div className="fixed inset-0 z-110 flex items-end sm:items-center justify-center p-0 sm:p-4">
       {/* Blurred Dark Backdrop */}
       <div
         ref={overlayRef}
@@ -194,7 +195,7 @@ export default function QuickBuySheet() {
             type="button"
             onClick={closeQuickBuy}
             aria-label="Close quick buy"
-            className="w-8 h-8 rounded-full bg-zinc-100 hover:bg-zinc-200 flex items-center justify-center text-zinc-500 hover:text-black transition-colors cursor-pointer shrink-0"
+            className="w-8 h-8 rounded-full bg-zinc-100 hover:bg-zinc-200 flex items-center justify-center text-zinc-500 hover:text-black transition-colors cursor-pointer shrink-0 touch-manipulation"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -206,6 +207,7 @@ export default function QuickBuySheet() {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
+              className="pointer-events-none"
             >
               <line x1="18" y1="6" x2="6" y2="18" />
               <line x1="6" y1="6" x2="18" y2="18" />

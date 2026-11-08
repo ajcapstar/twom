@@ -102,7 +102,22 @@
 .nav-logo,
 .nav-toggle,
 .nav-cart {
-  pointer-events: all;
+  pointer-events: auto;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav-toggle,
+.nav-cart {
+  background: none;
+  border: none;
+  outline: none;
+  font: inherit;
+}
+
+.nav-toggle svg,
+.nav-cart svg {
+  pointer-events: none;
 }
 
 @media (max-width: 640px) {
@@ -147,10 +162,7 @@
 .menu.is-open {
   visibility: visible;
   opacity: 1;
-  /* transition:
-    visibility 0s linear 0s,
-    opacity 0s linear 0s; */
-  pointer-events: all;
+  pointer-events: auto;
 }
 
 .menu-bg-svg {

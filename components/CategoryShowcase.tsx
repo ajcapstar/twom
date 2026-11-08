@@ -389,7 +389,7 @@ export default function CategoryShowcase({
                   type="button"
                   onClick={(e) => handleQuickAdd(e, item)}
                   aria-label={`Quick buy ${item.name}`}
-                  className={`rounded-full px-4 py-1.5 flex items-center justify-center transition-all cursor-pointer shrink-0 shadow-xs active:scale-95 ${
+                  className={`rounded-full px-4 py-1.5 flex items-center justify-center transition-all cursor-pointer shrink-0 shadow-xs active:scale-95 touch-manipulation ${
                     addedId === item.id
                       ? "bg-emerald-600 text-white"
                       : "bg-black text-white hover:bg-zinc-800"
@@ -405,6 +405,7 @@ export default function CategoryShowcase({
                       strokeWidth="2.5"
                       strokeLinecap="round"
                       strokeLinejoin="round"
+                      className="pointer-events-none"
                     >
                       <polyline points="20 6 9 17 4 12" />
                     </svg>
@@ -418,6 +419,7 @@ export default function CategoryShowcase({
                       strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
+                      className="pointer-events-none"
                     >
                       <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
                       <line x1="3" y1="6" x2="21" y2="6" />

@@ -110,7 +110,7 @@ export default function CartDrawer() {
   );
 
   return (
-    <div className="fixed inset-0 z-[120]">
+    <div className="fixed inset-0 z-120">
       {/* Dark Blur Overlay */}
       <div
         ref={overlayRef}
@@ -122,7 +122,7 @@ export default function CartDrawer() {
       {/* Sliding Drawer Panel */}
       <aside
         ref={panelRef}
-        className="absolute top-0 right-0 h-full w-full sm:w-[440px] md:w-[480px] bg-twom-bg shadow-2xl flex flex-col z-10"
+        className="absolute top-0 right-0 h-full w-full sm:w-110 md:w-120 bg-twom-bg shadow-2xl flex flex-col z-10"
         aria-label="Shopping Cart Drawer"
       >
         {/* Drawer Header */}
@@ -140,7 +140,7 @@ export default function CartDrawer() {
             type="button"
             onClick={closeCart}
             aria-label="Close cart drawer"
-            className="w-9 h-9 rounded-full flex items-center justify-center text-zinc-500 hover:text-black hover:bg-zinc-100 transition-colors cursor-pointer"
+            className="w-9 h-9 rounded-full flex items-center justify-center text-zinc-500 hover:text-black hover:bg-zinc-100 transition-colors cursor-pointer touch-manipulation"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -148,7 +148,7 @@ export default function CartDrawer() {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-5 h-5"
+              className="w-5 h-5 pointer-events-none"
             >
               <path
                 strokeLinecap="round"
@@ -253,7 +253,11 @@ export default function CartDrawer() {
                         <button
                           type="button"
                           onClick={() =>
-                            updateQuantity(item.id, item.quantity - 1, item.size)
+                            updateQuantity(
+                              item.id,
+                              item.quantity - 1,
+                              item.size,
+                            )
                           }
                           aria-label={`Decrease quantity of ${item.name}`}
                           className="w-7 h-7 flex items-center justify-center text-sm text-zinc-600 hover:bg-zinc-100 transition-colors cursor-pointer"
@@ -266,7 +270,11 @@ export default function CartDrawer() {
                         <button
                           type="button"
                           onClick={() =>
-                            updateQuantity(item.id, item.quantity + 1, item.size)
+                            updateQuantity(
+                              item.id,
+                              item.quantity + 1,
+                              item.size,
+                            )
                           }
                           aria-label={`Increase quantity of ${item.name}`}
                           className="w-7 h-7 flex items-center justify-center text-sm text-zinc-600 hover:bg-zinc-100 transition-colors cursor-pointer"
