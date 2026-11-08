@@ -65,7 +65,8 @@ export default function CartDrawer() {
       if (!shouldRender) return;
 
       if (isCartOpen) {
-        // Animate In
+        // Animate In — enable overlay pointer-events so tap-to-close works
+        gsap.set(overlayRef.current, { pointerEvents: "auto" });
         gsap.to(overlayRef.current, {
           opacity: 1,
           duration: 0.3,
@@ -81,7 +82,8 @@ export default function CartDrawer() {
           },
         );
       } else {
-        // Animate Out
+        // Animate Out — disable overlay immediately so it stops blocking touches
+        gsap.set(overlayRef.current, { pointerEvents: "none" });
         gsap.to(overlayRef.current, {
           opacity: 0,
           duration: 0.25,
@@ -115,7 +117,8 @@ export default function CartDrawer() {
       <div
         ref={overlayRef}
         onClick={closeCart}
-        className="absolute inset-0 bg-black/60 opacity-0 backdrop-blur-xs transition-colors cursor-pointer"
+        onTouchEnd={(e) => { e.preventDefault(); closeCart(); }}
+        className="absolute inset-0 bg-black/60 opacity-0 backdrop-blur-xs transition-colors cursor-pointer pointer-events-none"
         aria-hidden="true"
       />
 

@@ -38,6 +38,7 @@ body {
   background: var(--color-twom-bg);
   color: var(--color-twom-body);
   font-family: var(--font-nippo), sans-serif;
+  cursor: pointer;
 }
 
 button {

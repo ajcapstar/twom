@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect, useSyncExternalStore } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
@@ -23,7 +23,13 @@ const OPEN_FULL = `M${SVG_W},${SVG_H} Q${SVG_CX},${SVG_H} 0,${SVG_H} L0,0 L${SVG
 
 export default function Menu() {
   const [isOpen, setIsOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  // Hydration safety: useSyncExternalStore returns false on server, true on client
+  // without triggering a cascading setState in an effect
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
   const isAnimating = useRef(false);
   const splitsCreated = useRef(false);
   const svgTlRef = useRef<gsap.core.Timeline | null>(null);
@@ -34,10 +40,6 @@ export default function Menu() {
   const totalCount = mounted
     ? items.reduce((acc, item) => acc + item.quantity, 0)
     : 0;
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   // DOM refs
   const menuRef = useRef<HTMLDivElement>(null);

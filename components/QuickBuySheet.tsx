@@ -81,7 +81,8 @@ export default function QuickBuySheet() {
       if (!shouldRender) return;
 
       if (isOpen) {
-        // Animate In
+        // Animate In — enable overlay pointer-events so tap-to-close works
+        gsap.set(overlayRef.current, { pointerEvents: "auto" });
         gsap.to(overlayRef.current, {
           opacity: 1,
           duration: 0.25,
@@ -98,7 +99,8 @@ export default function QuickBuySheet() {
           },
         );
       } else {
-        // Animate Out
+        // Animate Out — disable overlay immediately so it stops blocking touches
+        gsap.set(overlayRef.current, { pointerEvents: "none" });
         gsap.to(overlayRef.current, {
           opacity: 0,
           duration: 0.2,
@@ -142,7 +144,8 @@ export default function QuickBuySheet() {
       <div
         ref={overlayRef}
         onClick={closeQuickBuy}
-        className="fixed inset-0 bg-black/60 opacity-0 backdrop-blur-xs transition-opacity cursor-pointer"
+        onTouchEnd={(e) => { e.preventDefault(); closeQuickBuy(); }}
+        className="fixed inset-0 bg-black/60 opacity-0 backdrop-blur-xs transition-opacity cursor-pointer pointer-events-none"
         aria-hidden="true"
       />
 
