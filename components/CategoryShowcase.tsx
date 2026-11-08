@@ -339,7 +339,7 @@ export default function CategoryShowcase({
               key={item.id}
               className="w-[72vw] min-w-[72vw] sm:w-[46vw] sm:min-w-[46vw] md:w-[calc(25%-18px)] md:min-w-[calc(25%-18px)] shrink-0 snap-start flex flex-col group"
             >
-              <div className="relative aspect-3/4 w-full overflow-hidden bg-zinc-100 mb-3">
+              <div className="relative aspect-3/4 w-full overflow-hidden bg-zinc-100 mb-3 isolate">
                 <Link
                   href={`/products/${item.slug || item.id}`}
                   className="relative block w-full h-full cursor-pointer"
@@ -359,7 +359,7 @@ export default function CategoryShowcase({
 
                 {/* Vertical Red Sale / Discount Badge (Like screenshot) */}
                 {item.saveBadge && (
-                  <div className="pointer-events-none absolute top-3 right-0 z-10 bg-[#c92a2a] text-white text-[9px] font-bold tracking-widest px-1.5 py-2.5 [writing-mode:vertical-rl] select-none uppercase font-mono shadow-xs">
+                  <div className="pointer-events-none absolute top-3 right-0 z-1 bg-[#c92a2a] text-white text-[9px] font-bold tracking-widest px-1.5 py-2.5 [writing-mode:vertical-rl] select-none uppercase font-mono shadow-xs">
                     {item.saveBadge}
                   </div>
                 )}
@@ -369,7 +369,7 @@ export default function CategoryShowcase({
                   type="button"
                   onClick={(e) => handleQuickAdd(e, item)}
                   aria-label={`Quick add ${item.name} to cart`}
-                  className={`absolute bottom-3 right-3 z-20 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer shadow-md ${
+                  className={`absolute bottom-3 right-3 z-2 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer shadow-md ${
                     addedId === item.id
                       ? "bg-emerald-600 text-white scale-110"
                       : "bg-white/95 text-zinc-900 hover:bg-black hover:text-white"

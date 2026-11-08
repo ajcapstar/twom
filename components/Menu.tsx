@@ -44,7 +44,6 @@ export default function Menu() {
   const navToggleMenuRef = useRef<HTMLParagraphElement>(null);
   const navToggleCloseRef = useRef<HTMLParagraphElement>(null);
   const menuBgRef = useRef<SVGPathElement>(null);
-  const menuLogoRef = useRef<HTMLDivElement>(null);
 
   // Collections (links + info items)
   const linksRef = useRef<HTMLAnchorElement[]>([]);
@@ -106,7 +105,6 @@ export default function Menu() {
     const navToggleMenu = navToggleMenuRef.current;
     const navToggleClose = navToggleCloseRef.current;
     const menuBg = menuBgRef.current;
-    const menuLogo = menuLogoRef.current;
     const infoItems = infoItemsRef.current;
     const splits = splitsRef.current;
 
@@ -114,7 +112,6 @@ export default function Menu() {
       !navToggleMenu ||
       !navToggleClose ||
       !menuBg ||
-      !menuLogo ||
       !infoItems ||
       !splits
     ) {
@@ -143,7 +140,6 @@ export default function Menu() {
       onReverseComplete: () => {
         setIsOpen(false);
         // Reset content to initial state for next open
-        gsap.set(menuLogo, { opacity: 0 });
         gsap.set(infoItems, { opacity: 0, y: 100 });
         gsap.set(linksRef.current, { opacity: 1 });
         splitsRef.current.forEach((split) => {
@@ -164,7 +160,6 @@ export default function Menu() {
     svgTlRef.current = svgTl;
 
     // Content animations — separate, never reversed
-    gsap.to(menuLogo, { duration: 0.1, opacity: 1, ease: "none", delay: 0.25 });
 
     gsap.to(infoItems, {
       duration: 0.75,
@@ -204,12 +199,7 @@ export default function Menu() {
 
       if (!navToggleClose || !navToggleMenu || !svgTl) return;
 
-      // Logo + info: instant hide (they're small, no value in animating)
-      gsap.to(menuLogoRef.current, {
-        duration: 1,
-        opacity: 0,
-        ease: "power2.in",
-      });
+      // Info items hide
       gsap.to(infoItemsRef.current, {
         duration: 0.6,
         opacity: 0,
@@ -245,6 +235,34 @@ export default function Menu() {
     if (isOpen) closeMenu();
     else openMenu();
   }, [isOpen, closeMenu, openMenu]);
+
+  // Lock background scroll when menu is open (matching CartDrawer)
+  useEffect(() => {
+    if (isOpen) {
+      const originalBodyOverflow = document.body.style.overflow;
+      const originalHtmlOverflow = document.documentElement.style.overflow;
+
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+
+      return () => {
+        document.body.style.overflow = originalBodyOverflow;
+        document.documentElement.style.overflow = originalHtmlOverflow;
+      };
+    }
+  }, [isOpen]);
+
+  // Close on Escape key press
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen && !isAnimating.current) {
+        toggleMenu();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, toggleMenu]);
 
   return (
     <div className={styles.nav}>
@@ -354,12 +372,6 @@ export default function Menu() {
         >
           <path ref={menuBgRef} id="menu-path" fill="#f0eeee" d={OPEN_HIDDEN} />
         </svg>
-
-        <div ref={menuLogoRef} className={styles["menu-logo"]}>
-          <Link href="/">
-            <Image src="/TWOM.png" alt="Logo" width={64} height={64} />
-          </Link>
-        </div>
 
         <div className={`${styles["menu-col"]} ${styles["menu-col-info"]}`}>
           <p>Get in touch</p>

@@ -25,7 +25,7 @@ export default function ProductCard({ product, isNew }: ProductCardProps) {
   return (
     <div className="group flex flex-col w-full">
       {/* Image Container with high-end hover effect */}
-      <div className="relative aspect-3/4 w-full overflow-hidden bg-zinc-100 mb-3 md:mb-4">
+      <div className="relative aspect-3/4 w-full overflow-hidden bg-zinc-100 mb-3 md:mb-4 isolate">
         <Link href={productHref} className="relative block w-full h-full cursor-pointer">
           {product.image_url ? (
             <Image
@@ -44,7 +44,7 @@ export default function ProductCard({ product, isNew }: ProductCardProps) {
 
         {/* Vertical "NEW" Badge */}
         {isNew && (
-          <span className="pointer-events-none absolute top-0 right-0 z-10 bg-black text-white text-[10px] font-bold tracking-widest px-1.5 py-2.5 [writing-mode:vertical-rl] select-none uppercase">
+          <span className="pointer-events-none absolute top-0 right-0 z-1 bg-black text-white text-[10px] font-bold tracking-widest px-1.5 py-2.5 [writing-mode:vertical-rl] select-none uppercase">
             NEW
           </span>
         )}
@@ -54,7 +54,7 @@ export default function ProductCard({ product, isNew }: ProductCardProps) {
           type="button"
           onClick={handleQuickBuy}
           aria-label={`Quick buy ${product.name}`}
-          className="absolute bottom-3 right-3 z-20 w-9 h-9 rounded-full bg-white/95 text-zinc-900 hover:bg-black hover:text-white flex items-center justify-center transition-all duration-200 cursor-pointer shadow-md"
+          className="absolute bottom-3 right-3 z-2 w-9 h-9 rounded-full bg-white/95 text-zinc-900 hover:bg-black hover:text-white flex items-center justify-center transition-all duration-200 cursor-pointer shadow-md"
         >
           <svg
             width="16"
