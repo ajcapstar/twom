@@ -337,9 +337,10 @@ export default function CategoryShowcase({
           return (
             <div
               key={item.id}
-              className="w-[72vw] min-w-[72vw] sm:w-[46vw] sm:min-w-[46vw] md:w-[calc(25%-18px)] md:min-w-[calc(25%-18px)] shrink-0 snap-start flex flex-col group"
+              className="w-[76vw] min-w-[76vw] sm:w-[48vw] sm:min-w-[48vw] md:w-[calc(25%-18px)] md:min-w-[calc(25%-18px)] shrink-0 snap-start flex flex-col justify-between group bg-white border border-zinc-200/80 rounded-3xl p-3 shadow-xs hover:shadow-md transition-shadow duration-300"
             >
-              <div className="relative aspect-3/4 w-full overflow-hidden bg-zinc-100 mb-3 isolate">
+              {/* Inner Rounded Image Container */}
+              <div className="relative aspect-3/4 w-full overflow-hidden rounded-2xl bg-zinc-100 isolate">
                 <Link
                   href={`/products/${item.slug || item.id}`}
                   className="relative block w-full h-full cursor-pointer"
@@ -348,7 +349,7 @@ export default function CategoryShowcase({
                     src={item.image_url || "/TWOM.png"}
                     alt={item.name}
                     fill
-                    sizes="(max-width: 640px) 72vw, (max-width: 1024px) 46vw, 25vw"
+                    sizes="(max-width: 640px) 76vw, (max-width: 1024px) 48vw, 25vw"
                     className={`transition-transform duration-700 ease-out group-hover:scale-105 ${
                       isBrandPlaceholder
                         ? "object-contain p-10 drop-shadow-xs"
@@ -357,29 +358,47 @@ export default function CategoryShowcase({
                   />
                 </Link>
 
-                {/* Vertical Red Sale / Discount Badge (Like screenshot) */}
+                {/* Vertical Badge in Top-Right Position */}
                 {item.saveBadge && (
-                  <div className="pointer-events-none absolute top-3 right-0 z-1 bg-[#c92a2a] text-white text-[9px] font-bold tracking-widest px-1.5 py-2.5 [writing-mode:vertical-rl] select-none uppercase font-mono shadow-xs">
+                  <div className="pointer-events-none absolute top-0 right-0 z-1 bg-[#c92a2a] text-white text-[9px] font-bold tracking-widest px-1.5 py-2.5 [writing-mode:vertical-rl] select-none uppercase font-mono shadow-xs rounded-tr-2xl">
                     {item.saveBadge}
                   </div>
                 )}
+              </div>
 
-                {/* Floating Quick Add to Bag Icon (Bottom right of image) */}
+              {/* Product Title Only */}
+              <Link
+                href={`/products/${item.slug || item.id}`}
+                className="text-sm font-medium text-twom-title leading-snug line-clamp-1 hover:opacity-75 transition-opacity block mt-3 mb-2.5"
+              >
+                {item.name}
+              </Link>
+
+              {/* Bottom Action Row: Price Pill (Left) + Cart Pill Button (Right) */}
+              <div className="flex items-center justify-between gap-2 mt-auto">
+                <div className="bg-zinc-100/90 text-zinc-900 rounded-full px-3.5 py-1.5 text-xs md:text-sm font-semibold flex items-center gap-1.5 shrink min-w-0">
+                  <span className="truncate">{formatNaira(item.price)}</span>
+                  {item.originalPrice && item.originalPrice > item.price && (
+                    <span className="text-zinc-400 line-through text-[11px] font-normal shrink-0">
+                      {formatNaira(item.originalPrice)}
+                    </span>
+                  )}
+                </div>
+
                 <button
                   type="button"
                   onClick={(e) => handleQuickAdd(e, item)}
-                  aria-label={`Quick add ${item.name} to cart`}
-                  className={`absolute bottom-3 right-3 z-2 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer shadow-md ${
+                  aria-label={`Quick buy ${item.name}`}
+                  className={`rounded-full px-4 py-1.5 flex items-center justify-center transition-all cursor-pointer shrink-0 shadow-xs active:scale-95 ${
                     addedId === item.id
-                      ? "bg-emerald-600 text-white scale-110"
-                      : "bg-white/95 text-zinc-900 hover:bg-black hover:text-white"
+                      ? "bg-emerald-600 text-white"
+                      : "bg-black text-white hover:bg-zinc-800"
                   }`}
                 >
                   {addedId === item.id ? (
-                    // Checkmark indicator
                     <svg
-                      width="16"
-                      height="16"
+                      width="15"
+                      height="15"
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
@@ -390,14 +409,13 @@ export default function CategoryShowcase({
                       <polyline points="20 6 9 17 4 12" />
                     </svg>
                   ) : (
-                    // Shopping Bag icon from screenshot
                     <svg
-                      width="16"
-                      height="16"
+                      width="15"
+                      height="15"
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
-                      strokeWidth="1.75"
+                      strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     >
@@ -407,28 +425,6 @@ export default function CategoryShowcase({
                     </svg>
                   )}
                 </button>
-              </div>
-
-              {/* Product Details */}
-              <div className="flex flex-col gap-1">
-                <Link
-                  href={`/products/${item.slug || item.id}`}
-                  className="text-xs md:text-sm font-medium text-twom-title leading-snug line-clamp-1 hover:opacity-75 transition-opacity"
-                >
-                  {item.name}
-                </Link>
-
-                <div className="flex items-center gap-2 text-xs md:text-sm">
-                  <span className="font-medium text-twom-title">
-                    {formatNaira(item.price)} NGN
-                  </span>
-
-                  {item.originalPrice && item.originalPrice > item.price && (
-                    <span className="text-zinc-400 line-through text-[11px] md:text-xs">
-                      {formatNaira(item.originalPrice)} NGN
-                    </span>
-                  )}
-                </div>
               </div>
             </div>
           );
