@@ -40,6 +40,10 @@ body {
   font-family: var(--font-nippo), sans-serif;
 }
 
+button {
+  cursor: pointer;
+}
+
 @keyframes marquee {
   0% {
     transform: translateX(0%);

@@ -207,7 +207,6 @@
 .menu-col h3,
 .menu-col h6,
 .menu-col p {
-  will-change: transform, opacity;
   opacity: 0;
 }
 
