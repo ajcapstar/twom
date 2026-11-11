@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useCartStore } from "@/lib/store";
 import { useUIStore } from "@/lib/ui-store";
+import { useScrollLock } from "@/lib/scroll-lock";
 import styles from "./Menu.module.css";
 
 interface SplitResult {
@@ -289,21 +290,8 @@ export default function Menu() {
     }
   }, [isOpen, isCartOpen, quickBuyProduct, closeCart, closeQuickBuy, closeMenu]);
 
-  // Lock background scroll when menu is open (matching CartDrawer)
-  useEffect(() => {
-    if (isOpen) {
-      const originalBodyOverflow = document.body.style.overflow;
-      const originalHtmlOverflow = document.documentElement.style.overflow;
-
-      document.body.style.overflow = "hidden";
-      document.documentElement.style.overflow = "hidden";
-
-      return () => {
-        document.body.style.overflow = originalBodyOverflow;
-        document.documentElement.style.overflow = originalHtmlOverflow;
-      };
-    }
-  }, [isOpen]);
+  // Lock background scroll when menu is open
+  useScrollLock("menu", isOpen);
 
   // Close on Escape key press
   useEffect(() => {

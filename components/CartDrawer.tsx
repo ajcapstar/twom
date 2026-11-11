@@ -6,6 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { useUIStore } from "@/lib/ui-store";
 import { useCartStore } from "@/lib/store";
 import { formatNaira } from "@/lib/utils";
+import { useScrollLock } from "@/lib/scroll-lock";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -28,20 +29,7 @@ export default function CartDrawer() {
   }
 
   // 3. Scroll lock when drawer is open
-  useEffect(() => {
-    if (isCartOpen) {
-      const originalBodyOverflow = document.body.style.overflow;
-      const originalHtmlOverflow = document.documentElement.style.overflow;
-
-      document.body.style.overflow = "hidden";
-      document.documentElement.style.overflow = "hidden";
-
-      return () => {
-        document.body.style.overflow = originalBodyOverflow;
-        document.documentElement.style.overflow = originalHtmlOverflow;
-      };
-    }
-  }, [isCartOpen]);
+  useScrollLock("cart", isCartOpen);
 
   // 4. Close on Escape key press
   useEffect(() => {

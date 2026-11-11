@@ -9,6 +9,7 @@ import { useUIStore } from "@/lib/ui-store";
 import { useCartStore } from "@/lib/store";
 import { formatNaira } from "@/lib/utils";
 import { Product } from "@/lib/types";
+import { useScrollLock } from "@/lib/scroll-lock";
 
 const SIZES = ["XS", "S", "M", "L", "XL", "XXL"] as const;
 
@@ -46,20 +47,7 @@ export default function QuickBuySheet() {
   }
 
   // Lock background scroll when Quick Buy sheet is open
-  useEffect(() => {
-    if (isOpen) {
-      const originalBodyOverflow = document.body.style.overflow;
-      const originalHtmlOverflow = document.documentElement.style.overflow;
-
-      document.body.style.overflow = "hidden";
-      document.documentElement.style.overflow = "hidden";
-
-      return () => {
-        document.body.style.overflow = originalBodyOverflow;
-        document.documentElement.style.overflow = originalHtmlOverflow;
-      };
-    }
-  }, [isOpen]);
+  useScrollLock("quickbuy", isOpen);
 
   // Close on Escape key press
   useEffect(() => {
