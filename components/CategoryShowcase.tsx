@@ -1,11 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
 import { Product } from "@/lib/types";
-import { formatNaira } from "@/lib/utils";
-import { useUIStore } from "@/lib/ui-store";
+import ProductCard from "@/components/ProductCard";
 
 interface CategoryShowcaseProps {
   dbProducts: Product[];
@@ -282,26 +279,6 @@ export default function CategoryShowcase({
   };
 
   const displayedItems = getDisplayedItems();
-  const openQuickBuy = useUIStore((state) => state.openQuickBuy);
-
-  const handleQuickAdd = (e: React.MouseEvent, item: ShowcaseItem) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    openQuickBuy({
-      id: item.id,
-      sku: item.sku,
-      slug: item.slug,
-      name: item.name,
-      description: item.description,
-      category: item.category,
-      price: item.price,
-      image_url: item.image_url,
-      stock_quantity: item.stock_quantity,
-      is_active: item.is_active,
-      created_at: item.created_at,
-    });
-  };
 
   return (
     <section className="w-full max-w-7xl mx-auto px-6 py-12 md:py-20">
@@ -325,89 +302,14 @@ export default function CategoryShowcase({
 
       {/* Horizontal Scrollable Product Carousel */}
       <div className="flex gap-4 md:gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory -mx-6 px-6 md:mx-0 md:px-0 pb-6">
-        {displayedItems.map((item) => {
-          const isBrandPlaceholder =
-            item.image_url?.includes("TWOM.png") ||
-            item.image_url?.includes("Twom.png") ||
-            !item.image_url;
-
-          return (
-            <div
-              key={item.id}
-              className="w-[76vw] min-w-[76vw] sm:w-[48vw] sm:min-w-[48vw] md:w-[calc(25%-18px)] md:min-w-[calc(25%-18px)] shrink-0 snap-start flex flex-col justify-between group bg-white border border-zinc-200/80 rounded-3xl p-3 shadow-xs hover:shadow-md transition-shadow duration-300"
-            >
-              {/* Inner Rounded Image Container */}
-              <div className="relative aspect-3/4 w-full overflow-hidden rounded-2xl bg-zinc-100 isolate">
-                <Link
-                  href={`/products/${item.slug || item.id}`}
-                  className="relative block w-full h-full cursor-pointer"
-                >
-                  <Image
-                    src={item.image_url || "/TWOM.png"}
-                    alt={item.name}
-                    fill
-                    sizes="(max-width: 640px) 76vw, (max-width: 1024px) 48vw, 25vw"
-                    className={`transition-transform duration-700 ease-out group-hover:scale-105 ${
-                      isBrandPlaceholder
-                        ? "object-contain p-10 drop-shadow-xs"
-                        : "object-cover object-center"
-                    }`}
-                  />
-                </Link>
-
-                {/* Vertical Badge in Top-Right Position */}
-                {item.saveBadge && (
-                  <div className="pointer-events-none absolute top-0 right-0 z-1 bg-[#c92a2a] text-white text-[9px] font-bold tracking-widest px-1.5 py-2.5 [writing-mode:vertical-rl] select-none uppercase font-mono shadow-xs rounded-tr-2xl">
-                    {item.saveBadge}
-                  </div>
-                )}
-              </div>
-
-              {/* Product Title Only */}
-              <Link
-                href={`/products/${item.slug || item.id}`}
-                className="text-sm font-medium text-twom-title leading-snug line-clamp-1 hover:opacity-75 transition-opacity block mt-3 mb-2.5"
-              >
-                {item.name}
-              </Link>
-
-              {/* Bottom Action Row: Price Pill (Left) + Cart Pill Button (Right) */}
-              <div className="flex items-center justify-between gap-2 mt-auto">
-                <div className="bg-zinc-100/90 text-zinc-900 rounded-full px-3.5 py-1.5 text-xs md:text-sm font-semibold flex items-center gap-1.5 shrink min-w-0">
-                  <span className="truncate">{formatNaira(item.price)}</span>
-                  {item.originalPrice && item.originalPrice > item.price && (
-                    <span className="text-zinc-400 line-through text-[11px] font-normal shrink-0">
-                      {formatNaira(item.originalPrice)}
-                    </span>
-                  )}
-                </div>
-
-                <button
-                  type="button"
-                  onClick={(e) => handleQuickAdd(e, item)}
-                  aria-label={`Quick buy ${item.name}`}
-                  className="bg-black text-white hover:bg-zinc-800 rounded-full px-4 py-1.5 flex items-center justify-center transition-all cursor-pointer shrink-0 shadow-xs active:scale-95 touch-manipulation"
-                >
-                  <svg
-                    width="15"
-                    height="15"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="pointer-events-none"
-                  >
-                    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
-                    <line x1="3" y1="6" x2="21" y2="6" />
-                    <path d="M16 10a4 4 0 0 1-8 0" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-          );
-        })}
+        {displayedItems.map((item) => (
+          <div
+            key={item.id}
+            className="w-[76vw] min-w-[76vw] sm:w-[48vw] sm:min-w-[48vw] md:w-[calc(25%-18px)] md:min-w-[calc(25%-18px)] shrink-0 snap-start flex flex-col"
+          >
+            <ProductCard product={item} />
+          </div>
+        ))}
       </div>
     </section>
   );

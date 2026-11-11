@@ -17,9 +17,13 @@ interface ProductCardProps {
 export default function ProductCard({ product, isNew }: ProductCardProps) {
   const openQuickBuy = useUIStore((state) => state.openQuickBuy);
 
+  const stock = typeof product.stock_quantity === "number" ? product.stock_quantity : 999;
+  const isOutOfStock = stock <= 0;
+
   const handleQuickBuy = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    if (isOutOfStock) return;
     openQuickBuy(product);
   };
 
@@ -36,7 +40,9 @@ export default function ProductCard({ product, isNew }: ProductCardProps) {
               alt={product.name}
               fill
               sizes="(max-width: 768px) 70vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+              className={`object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out ${
+                isOutOfStock ? "opacity-60 grayscale-30" : ""
+              }`}
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-xs uppercase tracking-widest text-twom-muted">
@@ -46,7 +52,11 @@ export default function ProductCard({ product, isNew }: ProductCardProps) {
         </Link>
 
         {/* Vertical Badge in Top-Right Position */}
-        {product.saveBadge ? (
+        {isOutOfStock ? (
+          <span className="pointer-events-none absolute top-0 right-0 z-1 bg-zinc-900/90 text-white text-[9px] font-bold tracking-widest px-1.5 py-2.5 [writing-mode:vertical-rl] select-none uppercase font-mono shadow-xs rounded-tr-2xl">
+            SOLD OUT
+          </span>
+        ) : product.saveBadge ? (
           <span className="pointer-events-none absolute top-0 right-0 z-1 bg-[#c92a2a] text-white text-[9px] font-bold tracking-widest px-1.5 py-2.5 [writing-mode:vertical-rl] select-none uppercase font-mono shadow-xs rounded-tr-2xl">
             {product.saveBadge}
           </span>
@@ -57,12 +67,34 @@ export default function ProductCard({ product, isNew }: ProductCardProps) {
         ) : null}
       </div>
 
-      {/* Product Title Only (Category, tagline, description scrapped) */}
-      <Link href={productHref} className="hover:opacity-75 transition-opacity block mt-3 mb-2.5">
+      {/* Product Title Only */}
+      <Link href={productHref} className="hover:opacity-75 transition-opacity block mt-3 mb-1.5">
         <h3 className="text-sm font-medium text-twom-title leading-snug line-clamp-1">
           {product.name}
         </h3>
       </Link>
+
+      {/* Inventory Stock Pill (Only shown when stock <= 10) */}
+      {stock <= 10 && (
+        <div className="mb-2.5">
+          {isOutOfStock ? (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-wider font-semibold bg-zinc-100 text-zinc-500 border border-zinc-200">
+              <span className="w-1.5 h-1.5 rounded-full bg-zinc-400" />
+              Out of stock
+            </span>
+          ) : stock <= 5 ? (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-wider font-semibold bg-rose-50 text-rose-700 border border-rose-200/80">
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
+              Only {stock} left
+            </span>
+          ) : (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-wider font-semibold bg-amber-50 text-amber-800 border border-amber-200/80">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+              Only {stock} left
+            </span>
+          )}
+        </div>
+      )}
 
       {/* Bottom Action Row: Price Pill (Left) + Cart Pill Button (Right) */}
       <div className="flex items-center justify-between gap-2 mt-auto">
@@ -77,9 +109,14 @@ export default function ProductCard({ product, isNew }: ProductCardProps) {
 
         <button
           type="button"
+          disabled={isOutOfStock}
           onClick={handleQuickBuy}
-          aria-label={`Quick buy ${product.name}`}
-          className="bg-black text-white hover:bg-zinc-800 rounded-full px-4 py-1.5 flex items-center justify-center transition-all cursor-pointer shrink-0 shadow-xs active:scale-95 touch-manipulation"
+          aria-label={isOutOfStock ? `${product.name} is out of stock` : `Quick buy ${product.name}`}
+          className={`rounded-full px-4 py-1.5 flex items-center justify-center transition-all shrink-0 shadow-xs touch-manipulation ${
+            isOutOfStock
+              ? "bg-zinc-100 text-zinc-400 border border-zinc-200 cursor-not-allowed"
+              : "bg-black text-white hover:bg-zinc-800 cursor-pointer active:scale-95"
+          }`}
         >
           <svg
             width="15"
