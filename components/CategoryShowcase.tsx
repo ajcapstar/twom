@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Product } from "@/lib/types";
 import { formatNaira } from "@/lib/utils";
-import { useCartStore } from "@/lib/store";
 import { useUIStore } from "@/lib/ui-store";
 
 interface CategoryShowcaseProps {
@@ -245,8 +244,6 @@ export default function CategoryShowcase({
   tabs = ["TEES & TANKS", "PANTS"],
 }: CategoryShowcaseProps) {
   const [activeTab, setActiveTab] = useState<string>(tabs[0]);
-  const [addedId, setAddedId] = useState<string | null>(null);
-  const addItem = useCartStore((state) => state.addItem);
 
   // Filter products by active category from DB, or fallback to reference samples
   const getDisplayedItems = (): ShowcaseItem[] => {
@@ -389,43 +386,23 @@ export default function CategoryShowcase({
                   type="button"
                   onClick={(e) => handleQuickAdd(e, item)}
                   aria-label={`Quick buy ${item.name}`}
-                  className={`rounded-full px-4 py-1.5 flex items-center justify-center transition-all cursor-pointer shrink-0 shadow-xs active:scale-95 touch-manipulation ${
-                    addedId === item.id
-                      ? "bg-emerald-600 text-white"
-                      : "bg-black text-white hover:bg-zinc-800"
-                  }`}
+                  className="bg-black text-white hover:bg-zinc-800 rounded-full px-4 py-1.5 flex items-center justify-center transition-all cursor-pointer shrink-0 shadow-xs active:scale-95 touch-manipulation"
                 >
-                  {addedId === item.id ? (
-                    <svg
-                      width="15"
-                      height="15"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="pointer-events-none"
-                    >
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  ) : (
-                    <svg
-                      width="15"
-                      height="15"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="pointer-events-none"
-                    >
-                      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
-                      <line x1="3" y1="6" x2="21" y2="6" />
-                      <path d="M16 10a4 4 0 0 1-8 0" />
-                    </svg>
-                  )}
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="pointer-events-none"
+                  >
+                    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 0 1-8 0" />
+                  </svg>
                 </button>
               </div>
             </div>
