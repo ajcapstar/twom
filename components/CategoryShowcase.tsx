@@ -315,7 +315,6 @@ export default function CategoryShowcase({
             key={tab}
             type="button"
             onClick={() => setActiveTab(tab)}
-            onTouchEnd={(e) => { e.preventDefault(); setActiveTab(tab); }}
             className={`font-nippo italic uppercase text-lg md:text-2xl tracking-wider transition-colors cursor-pointer ${
               activeTab === tab
                 ? "font-black text-black"
