@@ -76,7 +76,7 @@ export default async function Home() {
       {/* Featured Pieces Selection */}
       <section
         id="collection"
-        className="max-w-7xl mx-auto px-6 py-16 md:py-24 border-t border-twom-border/40"
+        className="max-w-7xl mx-auto px-4 md:px-6 py-16 md:py-24 border-t border-twom-border/40"
       >
         <div className="flex justify-between items-end mb-8 md:mb-16">
           <div>
@@ -90,11 +90,11 @@ export default async function Home() {
         </div>
 
         {/* Mobile Horizontal Carousel & Desktop Grid */}
-        <div className="flex md:grid md:grid-cols-2 gap-3 md:gap-x-10 md:gap-y-16 overflow-x-auto md:overflow-visible pb-4 md:pb-0 snap-x snap-mandatory no-scrollbar -mx-6 px-6 md:mx-0 md:px-0">
+        <div className="flex items-stretch md:grid md:grid-cols-2 gap-4 md:gap-x-10 md:gap-y-16 overflow-x-auto md:overflow-visible pb-4 md:pb-0 snap-x snap-mandatory no-scrollbar -mx-4 px-4 md:mx-0 md:px-0">
           {products?.slice(0, 4).map((product: Product, index: number) => (
             <div
               key={product.id}
-              className="w-[68vw] min-w-[68vw] sm:w-[48vw] sm:min-w-[48vw] shrink-0 snap-start md:w-auto md:min-w-0 md:shrink"
+              className="w-[68vw] min-w-[68vw] sm:w-[48vw] sm:min-w-[48vw] shrink-0 snap-start md:w-auto md:min-w-0 md:shrink flex flex-col h-full"
             >
               <ProductCard product={product} isNew={index === 0} />
             </div>

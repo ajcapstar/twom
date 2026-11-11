@@ -35,7 +35,7 @@ export default function EditorialCampaignBanners({
   const isLogo2 = banner2.image.includes("TWOM.png") || banner2.image.includes("Twom.png");
 
   return (
-    <section className="w-full max-w-7xl mx-auto px-6 py-12 md:py-20">
+    <section className="w-full max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-20">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         {/* BANNER 1 */}
         <Link

@@ -281,7 +281,7 @@ export default function CategoryShowcase({
   const displayedItems = getDisplayedItems();
 
   return (
-    <section className="w-full max-w-7xl mx-auto px-6 py-12 md:py-20">
+    <section className="w-full max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-20">
       {/* Category Tabs Header */}
       <div className="flex items-center gap-6 md:gap-10 mb-8 md:mb-12">
         {tabs.map((tab) => (
@@ -301,11 +301,11 @@ export default function CategoryShowcase({
       </div>
 
       {/* Horizontal Scrollable Product Carousel */}
-      <div className="flex gap-4 md:gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory -mx-6 px-6 md:mx-0 md:px-0 pb-6">
+      <div className="flex items-stretch gap-4 md:gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory -mx-4 px-4 md:mx-0 md:px-0 pb-6">
         {displayedItems.map((item) => (
           <div
             key={item.id}
-            className="w-[76vw] min-w-[76vw] sm:w-[48vw] sm:min-w-[48vw] md:w-[calc(25%-18px)] md:min-w-[calc(25%-18px)] shrink-0 snap-start flex flex-col"
+            className="w-[76vw] min-w-[76vw] sm:w-[48vw] sm:min-w-[48vw] md:w-[calc(25%-18px)] md:min-w-[calc(25%-18px)] shrink-0 snap-start flex flex-col h-full"
           >
             <ProductCard product={item} />
           </div>
