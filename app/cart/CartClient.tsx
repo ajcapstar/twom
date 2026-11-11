@@ -113,7 +113,7 @@ export default function CartPage() {
 
               return (
                 <div
-                  key={item.id}
+                  key={`${item.id}-${item.size || "default"}`}
                   className={`flex gap-6 border-b pb-8 transition-all duration-300 ${
                     isUnavailable
                       ? "border-rose-200 animate-pulse"
@@ -176,9 +176,16 @@ export default function CartPage() {
                           {formatNaira(item.price * item.quantity)}
                         </p>
                       </div>
-                      <p className="text-xs uppercase tracking-widest text-twom-muted mt-1">
-                        {item.category}
-                      </p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <p className="text-xs uppercase tracking-widest text-twom-muted">
+                          {item.category}
+                        </p>
+                        {item.size && (
+                          <span className="text-[10px] font-mono font-bold bg-zinc-100 text-zinc-700 px-1.5 py-0.5 rounded-xs">
+                            {item.size}
+                          </span>
+                        )}
+                      </div>
                     </div>
 
                     {/* Quantity & Remove */}
@@ -192,7 +199,7 @@ export default function CartPage() {
                       >
                         <button
                           onClick={() =>
-                            updateQuantity(item.id, item.quantity - 1)
+                            updateQuantity(item.id, item.quantity - 1, item.size)
                           }
                           className="px-4 py-1 text-twom-title hover:bg-zinc-100 transition-colors cursor-pointer"
                         >
@@ -203,7 +210,7 @@ export default function CartPage() {
                         </span>
                         <button
                           onClick={() =>
-                            updateQuantity(item.id, item.quantity + 1)
+                            updateQuantity(item.id, item.quantity + 1, item.size)
                           }
                           className="px-4 py-1 text-twom-title hover:bg-zinc-100 transition-colors cursor-pointer"
                         >
@@ -213,7 +220,7 @@ export default function CartPage() {
 
                       <button
                         onClick={() => {
-                          removeItem(item.id);
+                          removeItem(item.id, item.size);
                         }}
                         className={`text-xs underline underline-offset-4 cursor-pointer ${
                           isUnavailable

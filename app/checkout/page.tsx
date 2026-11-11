@@ -35,8 +35,8 @@ export default function CheckoutPage() {
 
   const hasInvalidItems = Object.keys(invalidIssues).length > 0;
 
-  const handleRemoveItem = (id: string) => {
-    removeItem(id);
+  const handleRemoveItem = (id: string, size?: string) => {
+    removeItem(id, size);
     setInvalidIssues((prev) => {
       const next = { ...prev };
       delete next[id];
@@ -283,7 +283,7 @@ export default function CheckoutPage() {
 
                   return (
                     <div
-                      key={item.id}
+                      key={`${item.id}-${item.size || "default"}`}
                       className={`flex gap-4 items-center transition-all p-2 rounded-xs ${
                         issueReason
                           ? "bg-rose-50/70 border border-rose-300"
@@ -323,9 +323,16 @@ export default function CheckoutPage() {
                         >
                           {item.name}
                         </p>
-                        <p className="text-[11px] text-twom-muted mt-0.5">
-                          Qty: {item.quantity}
-                        </p>
+                        <div className="flex items-center gap-2 mt-0.5">
+                          <p className="text-[11px] text-twom-muted">
+                            Qty: {item.quantity}
+                          </p>
+                          {item.size && (
+                            <span className="text-[10px] font-mono font-bold bg-zinc-100 text-zinc-700 px-1.5 py-0.5 rounded-xs">
+                              {item.size}
+                            </span>
+                          )}
+                        </div>
                         {issueReason && (
                           <span className="text-[11px] text-rose-600 font-medium block mt-0.5">
                             {issueReason}
@@ -347,7 +354,7 @@ export default function CheckoutPage() {
                         {issueReason && (
                           <button
                             type="button"
-                            onClick={() => handleRemoveItem(item.id)}
+                            onClick={() => handleRemoveItem(item.id, item.size)}
                             className="text-[10px] uppercase tracking-wider text-rose-700 hover:text-white hover:bg-rose-700 border border-rose-300 px-2 py-0.5 transition-colors cursor-pointer font-medium"
                           >
                             Remove

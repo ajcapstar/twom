@@ -28,19 +28,19 @@ export default function Footer() {
               Collection
             </span>
             <Link
-              href="/shop"
+              href="/products"
               className="hover:text-twom-title transition-colors"
             >
               All Pieces
             </Link>
             <Link
-              href="/shop?category=tailoring"
+              href="/products?category=Tailoring"
               className="hover:text-twom-title transition-colors"
             >
               Tailoring
             </Link>
             <Link
-              href="/shop?category=essentials"
+              href="/products?category=Essentials"
               className="hover:text-twom-title transition-colors"
             >
               Essentials
