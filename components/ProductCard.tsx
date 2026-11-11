@@ -17,7 +17,8 @@ interface ProductCardProps {
 export default function ProductCard({ product, isNew }: ProductCardProps) {
   const openQuickBuy = useUIStore((state) => state.openQuickBuy);
 
-  const stock = typeof product.stock_quantity === "number" ? product.stock_quantity : 999;
+  const stock =
+    typeof product.stock_quantity === "number" ? product.stock_quantity : 999;
   const isOutOfStock = stock <= 0;
 
   const handleQuickBuy = (e: React.MouseEvent) => {
@@ -33,7 +34,10 @@ export default function ProductCard({ product, isNew }: ProductCardProps) {
     <div className="group relative flex flex-col justify-between w-full h-full bg-white border border-zinc-200/80 rounded-3xl p-3 shadow-xs hover:shadow-md transition-shadow duration-300">
       {/* Inner Rounded Image Container */}
       <div className="relative aspect-3/4 w-full overflow-hidden rounded-2xl bg-zinc-100 isolate">
-        <Link href={productHref} className="relative block w-full h-full cursor-pointer">
+        <Link
+          href={productHref}
+          className="relative block w-full h-full cursor-pointer"
+        >
           {product.image_url ? (
             <Image
               src={product.image_url}
@@ -68,16 +72,19 @@ export default function ProductCard({ product, isNew }: ProductCardProps) {
       </div>
 
       {/* Product Title Only */}
-      <Link href={productHref} className="hover:opacity-75 transition-opacity block mt-3 mb-1.5">
+      <Link
+        href={productHref}
+        className="hover:opacity-75 transition-opacity block mt-3 mb-1.5"
+      >
         <h3 className="text-sm font-medium text-twom-title leading-snug line-clamp-1">
           {product.name}
         </h3>
       </Link>
 
       {/* Inventory Stock Pill Slot - reserves space when stock > 10 so all cards have identical length */}
-      <div className="min-h-[22px] mb-2.5 flex items-center">
-        {stock <= 10 && (
-          isOutOfStock ? (
+      <div className="min-h-5.5 mb-2.5 flex items-center">
+        {stock <= 10 &&
+          (isOutOfStock ? (
             <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-wider font-semibold bg-zinc-100 text-zinc-500 border border-zinc-200">
               <span className="w-1.5 h-1.5 rounded-full bg-zinc-400" />
               Out of stock
@@ -92,8 +99,7 @@ export default function ProductCard({ product, isNew }: ProductCardProps) {
               <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
               Only {stock} left
             </span>
-          )
-        )}
+          ))}
       </div>
 
       {/* Bottom Action Row: Price Pill (Left) + Cart Pill Button (Right) */}
@@ -111,7 +117,11 @@ export default function ProductCard({ product, isNew }: ProductCardProps) {
           type="button"
           disabled={isOutOfStock}
           onClick={handleQuickBuy}
-          aria-label={isOutOfStock ? `${product.name} is out of stock` : `Quick buy ${product.name}`}
+          aria-label={
+            isOutOfStock
+              ? `${product.name} is out of stock`
+              : `Quick buy ${product.name}`
+          }
           className={`rounded-full px-4 py-1.5 flex items-center justify-center transition-all shrink-0 shadow-xs touch-manipulation ${
             isOutOfStock
               ? "bg-zinc-100 text-zinc-400 border border-zinc-200 cursor-not-allowed"

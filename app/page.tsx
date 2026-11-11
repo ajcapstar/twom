@@ -42,6 +42,35 @@ export default async function Home() {
           </div>
         </div>
       </div>
+
+      {/* Featured Pieces Selection */}
+      <section
+        id="collection"
+        className="max-w-7xl mx-auto px-4 md:px-6 py-16 md:py-24 border-t border-twom-border/40"
+      >
+        <div className="flex justify-between items-end mb-8 md:mb-16">
+          {/* <div>
+            <span className="text-xs uppercase tracking-[0.2em] text-twom-muted">
+              Featured Pieces
+            </span>
+          </div> */}
+          <span className="text-xs uppercase tracking-widest text-twom-muted hidden md:block">
+            Showing {Math.min(products?.length || 0, 4)} Essentials
+          </span>
+        </div>
+
+        {/* Mobile Horizontal Carousel & Desktop Grid */}
+        <div className="flex items-stretch md:grid md:grid-cols-2 gap-4 md:gap-x-10 md:gap-y-16 overflow-x-auto md:overflow-visible pb-4 md:pb-0 snap-x snap-mandatory no-scrollbar -mx-4 px-4 md:mx-0 md:px-0">
+          {products?.slice(0, 4).map((product: Product, index: number) => (
+            <div
+              key={product.id}
+              className="w-[68vw] min-w-[68vw] sm:w-[48vw] sm:min-w-[48vw] shrink-0 snap-start md:w-auto md:min-w-0 md:shrink flex flex-col h-full"
+            >
+              <ProductCard product={product} isNew={index === 0} />
+            </div>
+          ))}
+        </div>
+      </section>
       {/* Set 1: Editorial Campaign Banners (Tees & Tanks, Pants) */}
       <EditorialCampaignBanners />
 
@@ -72,35 +101,6 @@ export default async function Home() {
         dbProducts={products || []}
         tabs={["HOODIES", "ACCESSORIES"]}
       />
-
-      {/* Featured Pieces Selection */}
-      <section
-        id="collection"
-        className="max-w-7xl mx-auto px-4 md:px-6 py-16 md:py-24 border-t border-twom-border/40"
-      >
-        <div className="flex justify-between items-end mb-8 md:mb-16">
-          <div>
-            <span className="text-xs uppercase tracking-[0.2em] text-twom-muted">
-              Featured Pieces
-            </span>
-          </div>
-          <span className="text-xs uppercase tracking-widest text-twom-muted hidden md:block">
-            Showing {Math.min(products?.length || 0, 4)} Essentials
-          </span>
-        </div>
-
-        {/* Mobile Horizontal Carousel & Desktop Grid */}
-        <div className="flex items-stretch md:grid md:grid-cols-2 gap-4 md:gap-x-10 md:gap-y-16 overflow-x-auto md:overflow-visible pb-4 md:pb-0 snap-x snap-mandatory no-scrollbar -mx-4 px-4 md:mx-0 md:px-0">
-          {products?.slice(0, 4).map((product: Product, index: number) => (
-            <div
-              key={product.id}
-              className="w-[68vw] min-w-[68vw] sm:w-[48vw] sm:min-w-[48vw] shrink-0 snap-start md:w-auto md:min-w-0 md:shrink flex flex-col h-full"
-            >
-              <ProductCard product={product} isNew={index === 0} />
-            </div>
-          ))}
-        </div>
-      </section>
     </div>
   );
 }
