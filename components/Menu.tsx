@@ -3,13 +3,39 @@ import { useState, useRef, useCallback, useEffect, useSyncExternalStore } from "
 import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
-import { SplitText } from "gsap/SplitText";
 import { useGSAP } from "@gsap/react";
 import { useCartStore } from "@/lib/store";
 import { useUIStore } from "@/lib/ui-store";
 import styles from "./Menu.module.css";
 
-gsap.registerPlugin(SplitText);
+interface SplitResult {
+  chars: HTMLElement[];
+  revert: () => void;
+}
+
+// iOS 15-compatible character splitter (avoids gsap/SplitText's incompatible regex)
+function createCharSplit(element: HTMLElement): SplitResult {
+  const originalHTML = element.innerHTML;
+  const text = element.textContent || "";
+  element.innerHTML = "";
+  const chars: HTMLElement[] = [];
+
+  for (const char of text) {
+    const span = document.createElement("span");
+    span.className = "char";
+    span.style.display = "inline-block";
+    span.textContent = char === " " ? "\u00A0" : char;
+    element.appendChild(span);
+    chars.push(span);
+  }
+
+  return {
+    chars,
+    revert: () => {
+      element.innerHTML = originalHTML;
+    },
+  };
+}
 
 // SVG dimensions (from your viewBox="0 0 1131 861")
 const SVG_W = 1131;
@@ -50,7 +76,7 @@ export default function Menu() {
   // Collections (links + info items)
   const linksRef = useRef<HTMLAnchorElement[]>([]);
   const infoItemsRef = useRef<Element[]>([]);
-  const splitsRef = useRef<SplitText[]>([]);
+  const splitsRef = useRef<SplitResult[]>([]);
 
   // useGSAP handles initial static setup, automatic cleanup, and provides contextSafe
   const { contextSafe } = useGSAP(
@@ -88,12 +114,9 @@ export default function Menu() {
       linksRef.current = menuLinks;
       infoItemsRef.current = menuInfoItems;
 
-      const splits: SplitText[] = [];
+      const splits: SplitResult[] = [];
       menuLinks.forEach((link) => {
-        const split = new SplitText(link, {
-          type: "chars",
-          charsClass: "char",
-        });
+        const split = createCharSplit(link);
         splits.push(split);
         // Hide chars immediately so they don't flash
         gsap.set(split.chars, { opacity: 0, x: "750%" });
