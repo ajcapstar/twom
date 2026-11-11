@@ -60,9 +60,13 @@ export default function Menu() {
   const splitsCreated = useRef(false);
   const svgTlRef = useRef<gsap.core.Timeline | null>(null);
 
-  // Cart state for the top-right cart indicator
+  // UI and Cart store state
   const items = useCartStore((state) => state.items);
+  const isCartOpen = useUIStore((state) => state.isCartOpen);
   const openCart = useUIStore((state) => state.openCart);
+  const closeCart = useUIStore((state) => state.closeCart);
+  const quickBuyProduct = useUIStore((state) => state.quickBuyProduct);
+  const closeQuickBuy = useUIStore((state) => state.closeQuickBuy);
   const totalCount = mounted
     ? items.reduce((acc, item) => acc + item.quantity, 0)
     : 0;
@@ -256,10 +260,34 @@ export default function Menu() {
 
   const toggleMenu = useCallback(() => {
     if (isAnimating.current) return;
+    if (isCartOpen) closeCart();
+    if (quickBuyProduct) closeQuickBuy();
     isAnimating.current = true;
     if (isOpen) closeMenu();
     else openMenu();
-  }, [isOpen, closeMenu, openMenu]);
+  }, [isOpen, isCartOpen, quickBuyProduct, closeCart, closeQuickBuy, closeMenu, openMenu]);
+
+  const handleCartClick = useCallback(() => {
+    if (quickBuyProduct) closeQuickBuy();
+    if (isOpen && !isAnimating.current) {
+      isAnimating.current = true;
+      closeMenu();
+    }
+    if (isCartOpen) {
+      closeCart();
+    } else {
+      openCart();
+    }
+  }, [isOpen, isCartOpen, quickBuyProduct, closeCart, openCart, closeQuickBuy, closeMenu]);
+
+  const handleLogoClick = useCallback(() => {
+    if (isCartOpen) closeCart();
+    if (quickBuyProduct) closeQuickBuy();
+    if (isOpen && !isAnimating.current) {
+      isAnimating.current = true;
+      closeMenu();
+    }
+  }, [isOpen, isCartOpen, quickBuyProduct, closeCart, closeQuickBuy, closeMenu]);
 
   // Lock background scroll when menu is open (matching CartDrawer)
   useEffect(() => {
@@ -338,7 +366,7 @@ export default function Menu() {
 
       {/* 2. Brand Logo in the Center */}
       <div className={styles["nav-logo"]}>
-        <Link href="/">
+        <Link href="/" onClick={handleLogoClick}>
           <Image src="/TWOM.png" alt="Logo" width={64} height={64} priority />
         </Link>
       </div>
@@ -346,9 +374,9 @@ export default function Menu() {
       {/* 3. Shopping Cart on the Extreme Right */}
       <button
         type="button"
-        onClick={openCart}
+        onClick={handleCartClick}
         className={styles["nav-cart"]}
-        aria-label="Open Shopping Bag"
+        aria-label="Toggle Shopping Bag"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
