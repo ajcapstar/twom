@@ -32,3 +32,4 @@ export function useScrollLock(key: string, lock: boolean) {
     }
   }, [key, lock]);
 }
+
