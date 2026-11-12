@@ -1,6 +1,9 @@
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
-import { Product } from "@/lib/types";
+import {
+  ShowcaseItem,
+  getFallbackItemsForCategory,
+} from "@/lib/showcase-catalog";
 import ProductCard from "@/components/ProductCard";
 
 export const instant = false;
@@ -27,8 +30,19 @@ export default async function ProductsPage({
     ascending: false,
   });
 
+  // Fall back to showcase previews for matching campaign categories when DB is empty
+  const fallbackProducts =
+    !error && (!products || products.length === 0) && category
+      ? getFallbackItemsForCategory(category)
+      : [];
+
+  const displayedProducts: ShowcaseItem[] =
+    products && products.length > 0
+      ? (products as ShowcaseItem[])
+      : fallbackProducts;
+
   // Handle empty state or errors gracefully
-  if (error || !products || products.length === 0) {
+  if (error || displayedProducts.length === 0) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-twom-bg text-twom-title gap-4 px-6">
         <p className="text-twom-muted">
@@ -49,7 +63,7 @@ export default async function ProductsPage({
   }
 
   return (
-    <div className="w-full min-h-screen bg-twom-bg pt-32 pb-24 px-6 md:px-12">
+    <div className="w-full min-h-screen bg-twom-bg pt-32 pb-24 px-4 md:px-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-4">
@@ -71,14 +85,15 @@ export default async function ProductsPage({
               </Link>
             )}
             <span className="text-xs uppercase tracking-widest text-twom-muted">
-              Showing {products.length} {products.length === 1 ? "Piece" : "Pieces"}
+              Showing {displayedProducts.length}{" "}
+              {displayedProducts.length === 1 ? "Piece" : "Pieces"}
             </span>
           </div>
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16">
-          {products.map((product: Product) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 items-stretch">
+          {displayedProducts.map((product: ShowcaseItem) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>

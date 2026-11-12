@@ -3,6 +3,8 @@ export const PRODUCT_CATEGORIES = [
   "Pants",
   "Hoodies",
   "Accessories",
+  "Shirts",
+  "Anime",
   "Outerwear",
   "Tailoring",
   "Essentials",

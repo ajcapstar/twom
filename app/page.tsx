@@ -19,7 +19,7 @@ export default async function Home() {
       <Hero />
 
       {/* Infinite Marquee Ticker */}
-      <div className="w-full overflow-hidden border-y border-twom-border/50 bg-twom-bg py-3.5">
+      <div className="w-full overflow-hidden border-y border-twom-border/50 bg-twom-bg flex items-center h-12">
         <div className="flex w-max animate-marquee">
           <div className="flex items-center gap-10 px-5 text-xs md:text-sm font-medium tracking-wider text-twom-title shrink-0">
             <span>Good things stay good ✳</span>
@@ -46,21 +46,10 @@ export default async function Home() {
       {/* Featured Pieces Selection */}
       <section
         id="collection"
-        className="max-w-7xl mx-auto px-4 md:px-6 py-16 md:py-24 border-t border-twom-border/40"
+        className="max-w-7xl mx-auto px-4 md:px-6 py-4 md:py-27 border-t border-twom-border/40"
       >
-        <div className="flex justify-between items-end mb-8 md:mb-16">
-          {/* <div>
-            <span className="text-xs uppercase tracking-[0.2em] text-twom-muted">
-              Featured Pieces
-            </span>
-          </div> */}
-          <span className="text-xs uppercase tracking-widest text-twom-muted hidden md:block">
-            Showing {Math.min(products?.length || 0, 4)} Essentials
-          </span>
-        </div>
-
         {/* Mobile Horizontal Carousel & Desktop Grid */}
-        <div className="flex items-stretch md:grid md:grid-cols-2 gap-4 md:gap-x-10 md:gap-y-16 overflow-x-auto md:overflow-visible pb-4 md:pb-0 snap-x snap-mandatory no-scrollbar -mx-4 px-4 md:mx-0 md:px-0">
+        <div className="flex items-stretch md:grid md:grid-cols-2 gap-4 md:gap-6 overflow-x-auto md:overflow-visible snap-x snap-mandatory scroll-px-4 no-scrollbar -mx-4 px-4 md:scroll-px-0 md:mx-0 md:px-0">
           {products?.slice(0, 4).map((product: Product, index: number) => (
             <div
               key={product.id}
@@ -100,6 +89,28 @@ export default async function Home() {
       <CategoryShowcase
         dbProducts={products || []}
         tabs={["HOODIES", "ACCESSORIES"]}
+      />
+
+      {/* Set 3: Editorial Campaign Banners (Shirts, Anime) */}
+      <EditorialCampaignBanners
+        banner1={{
+          title: "Shirts",
+          image: "/TWOM.png",
+          link: "/products?category=Shirts",
+          priority: false,
+        }}
+        banner2={{
+          title: "Anime",
+          image: "/TWOM.png",
+          link: "/products?category=Anime",
+          priority: false,
+        }}
+      />
+
+      {/* Set 3: Interactive Category Showcase (Shirts, Anime) */}
+      <CategoryShowcase
+        dbProducts={products || []}
+        tabs={["SHIRTS", "ANIME"]}
       />
     </div>
   );

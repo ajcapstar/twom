@@ -41,7 +41,11 @@ export async function addProduct(formData: FormData) {
   const stock = parseInt(stockString) || 0;
 
   // 4. Generate a unique Slug (e.g., "heavy-coat-1234")
-  const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "") + "-" + Date.now().toString().slice(-4);
+  const baseSlug = name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)+/g, "");
+  const slug = `${baseSlug || "piece"}-${Date.now().toString().slice(-4)}`;
 
   // 5. Upload Image to Supabase Storage
   // We prepend a timestamp to the filename so files never overwrite each other
@@ -79,6 +83,7 @@ export async function addProduct(formData: FormData) {
   // 8. Tell Next.js to refresh the storefront cache immediately!
   revalidatePath("/");
   revalidatePath("/products");
+  revalidatePath(`/products/${slug}`);
 
   return { success: true };
 }

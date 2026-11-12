@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { sendOrderConfirmation } from "@/lib/email";
+import { isSampleProductId } from "@/lib/showcase-catalog";
 
 interface CheckoutRequestBody {
   customer: {
@@ -59,6 +60,16 @@ export async function POST(req: Request) {
     }
 
     const productIds = cart.map((item) => item.id);
+
+    if (productIds.some((id) => isSampleProductId(id))) {
+      return NextResponse.json(
+        {
+          error:
+            "Your cart contains preview pieces that are not yet published in inventory. Please remove them before checkout.",
+        },
+        { status: 400 }
+      );
+    }
 
     // 3. Zero-Trust Verification: Fetch products from database to calculate actual prices
     const { data: dbProducts, error: productsError } = await supabaseAdmin
