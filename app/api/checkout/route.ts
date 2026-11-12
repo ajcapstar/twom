@@ -3,6 +3,8 @@ import { supabaseAdmin } from "@/lib/supabase-admin";
 import { sendOrderConfirmation } from "@/lib/email";
 import { isSampleProductId } from "@/lib/showcase-catalog";
 
+export const dynamic = "force-dynamic";
+
 interface CheckoutRequestBody {
   customer: {
     name: string;
