@@ -2,12 +2,20 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 
 export default async function Hero() {
-  // 1. Fetch data right inside the component
-  const { data: heroData } = await supabase
-    .from("hero_sections")
-    .select("*")
-    .eq("is_active", true)
-    .single();
+  // 1. Fetch data safely with fallback
+  let heroData = null;
+  try {
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
+      const { data } = await supabase
+        .from("hero_sections")
+        .select("*")
+        .eq("is_active", true)
+        .single();
+      heroData = data;
+    }
+  } catch {
+    // Fallback below handles missing data or connection error
+  }
 
   // 2. Fallback logic (protects against empty DB or network failure)
   const hero = heroData || {

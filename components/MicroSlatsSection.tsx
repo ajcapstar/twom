@@ -1,7 +1,9 @@
 'use client';
 
-import MicroSlats from './MicroSlats';
+import dynamic from 'next/dynamic';
 import type { ReactNode } from 'react';
+
+const MicroSlats = dynamic(() => import('./MicroSlats'), { ssr: false });
 
 interface MicroSlatsSectionProps {
   children: ReactNode;

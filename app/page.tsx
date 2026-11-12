@@ -8,12 +8,20 @@ import { Product } from "../lib/types";
 
 export const instant = false;
 export default async function Home() {
-  // Fetch active products for showcase & featured pieces
-  const { data: products } = await supabase
-    .from("products")
-    .select("*")
-    .eq("is_active", true)
-    .order("created_at", { ascending: false });
+  // Fetch active products for showcase & featured pieces safely
+  let products: Product[] = [];
+  try {
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
+      const { data } = await supabase
+        .from("products")
+        .select("*")
+        .eq("is_active", true)
+        .order("created_at", { ascending: false });
+      if (data) products = data;
+    }
+  } catch {
+    // If database is not configured in preview, showcases fall back gracefully
+  }
 
   return (
     <div className="w-full bg-twom-bg text-twom-body">
