@@ -690,10 +690,15 @@ const MicroSlats = ({
     };
 
     const buildFluid = () => {
-      if (!floatTargets) return;
-      const aspect = width / height;
-      const w = Math.max(8, Math.round(aspect >= 1 ? FLUID_SIZE * aspect : FLUID_SIZE));
-      const h = Math.max(8, Math.round(aspect >= 1 ? FLUID_SIZE : FLUID_SIZE / aspect));
+      const s = settingsRef.current;
+      if (!floatTargets || !s?.interactive) {
+        disposeFluid();
+        return;
+      }
+      if (width <= 1 || height <= 1) return;
+      const aspect = clamp(width / Math.max(1, height), 0.2, 5);
+      const w = clamp(Math.round(aspect >= 1 ? FLUID_SIZE * aspect : FLUID_SIZE), 8, 512);
+      const h = clamp(Math.round(aspect >= 1 ? FLUID_SIZE : FLUID_SIZE / aspect), 8, 512);
       if (fluid && fluid.width === w && fluid.height === h) return;
       disposeFluid();
       fluid = {
@@ -728,8 +733,8 @@ const MicroSlats = ({
       const gapSize = clamp(s.gap, 0, 64);
       const pitchX = slatW + gapSize;
       const pitchY = slatH + gapSize;
-      const cols = Math.min(2048, Math.ceil((width + gapSize) / pitchX) + 1);
-      const rows = Math.min(2048, Math.ceil((height + gapSize) / pitchY) + 1);
+      const cols = clamp(Math.ceil((width + gapSize) / pitchX) + 1, 1, 1024);
+      const rows = clamp(Math.ceil((height + gapSize) / pitchY) + 1, 1, 1024);
       const originX = (width - (cols * pitchX - gapSize)) / 2;
       const originY = (height - (rows * pitchY - gapSize)) / 2;
       if (fieldTarget.width !== cols || fieldTarget.height !== rows) {
