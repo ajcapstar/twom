@@ -188,3 +188,123 @@ button {
     @apply font-sans;
   }
 }
+
+/* ==========================================================================
+   Liquid Glass & Specular Sheen System
+   ========================================================================== */
+
+.liquid-glass {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.78) 0%,
+    rgba(255, 255, 255, 0.54) 35%,
+    rgba(255, 255, 255, 0.44) 65%,
+    rgba(255, 255, 255, 0.7) 100%
+  );
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow:
+    0 20px 40px -15px rgba(16, 24, 40, 0.07),
+    0 1px 3px 0 rgba(0, 0, 0, 0.04),
+    inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 2px 0 rgba(0, 0, 0, 0.03);
+}
+
+/* Subtle angled specular sheen (always visible physical refraction across the surface) */
+.liquid-glass-sheen {
+  position: relative;
+  overflow: hidden;
+}
+
+.liquid-glass-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    125deg,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.14) 30%,
+    rgba(255, 255, 255, 0) 52%,
+    rgba(255, 255, 255, 0.06) 75%,
+    rgba(255, 255, 255, 0.22) 100%
+  );
+  z-index: 1;
+}
+
+/* Tactile liquid glass pill (for price capsules, badges, and segmented tab dock) */
+.liquid-glass-pill {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.88) 0%,
+    rgba(255, 255, 255, 0.62) 100%
+  );
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow:
+    0 2px 8px -2px rgba(16, 24, 40, 0.06),
+    inset 0 1px 0.8px 0 rgba(255, 255, 255, 1),
+    inset 0 -0.8px 1px 0 rgba(0, 0, 0, 0.02);
+}
+
+/* Obsidian liquid glass (for dark action buttons, high contrast pills) */
+.liquid-glass-dark {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    rgba(22, 22, 26, 0.94) 0%,
+    rgba(10, 10, 14, 0.86) 100%
+  );
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 6px 16px -4px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0.8px 0 rgba(255, 255, 255, 0.32),
+    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* Dark mode adjustments */
+.dark .liquid-glass {
+  background: linear-gradient(
+    135deg,
+    rgba(32, 32, 38, 0.78) 0%,
+    rgba(18, 18, 24, 0.55) 35%,
+    rgba(14, 14, 18, 0.45) 65%,
+    rgba(28, 28, 34, 0.7) 100%
+  );
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow:
+    0 20px 40px -15px rgba(0, 0, 0, 0.4),
+    0 1px 3px 0 rgba(0, 0, 0, 0.25),
+    inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.25),
+    inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.3);
+}
+
+.dark .liquid-glass-sheen::after {
+  background: linear-gradient(
+    125deg,
+    rgba(255, 255, 255, 0.16) 0%,
+    rgba(255, 255, 255, 0.04) 35%,
+    rgba(255, 255, 255, 0) 55%,
+    rgba(255, 255, 255, 0.06) 100%
+  );
+}
+
+.dark .liquid-glass-pill {
+  background: linear-gradient(
+    135deg,
+    rgba(45, 45, 52, 0.85) 0%,
+    rgba(28, 28, 34, 0.65) 100%
+  );
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #f3f4f6;
+  box-shadow:
+    0 2px 8px -2px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0.8px 0 rgba(255, 255, 255, 0.3);
+}

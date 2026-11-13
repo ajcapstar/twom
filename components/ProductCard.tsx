@@ -31,9 +31,9 @@ export default function ProductCard({ product, isNew }: ProductCardProps) {
   const productHref = `/products/${product.slug || product.id}`;
 
   return (
-    <div className="group relative flex flex-col justify-between w-full h-full bg-white border border-zinc-200/80 rounded-3xl p-3 shadow-xs hover:shadow-md transition-shadow duration-300">
+    <div className="liquid-glass liquid-glass-sheen group relative flex flex-col justify-between w-full h-full rounded-3xl p-3 hover:shadow-[0_25px_50px_-12px_rgba(16,24,40,0.12)] transition-all duration-300">
       {/* Inner Rounded Image Container */}
-      <div className="relative aspect-3/4 w-full overflow-hidden rounded-2xl bg-zinc-100 isolate">
+      <div className="relative aspect-3/4 w-full overflow-hidden rounded-2xl bg-zinc-100/70 shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] isolate">
         <Link
           href={productHref}
           className="relative block w-full h-full cursor-pointer"
@@ -57,15 +57,15 @@ export default function ProductCard({ product, isNew }: ProductCardProps) {
 
         {/* Vertical Badge in Top-Right Position */}
         {isOutOfStock ? (
-          <span className="pointer-events-none absolute top-0 right-0 z-1 bg-zinc-900/90 text-white text-[9px] font-bold tracking-widest px-1.5 py-2.5 [writing-mode:vertical-rl] select-none uppercase font-mono shadow-xs rounded-tr-2xl">
+          <span className="pointer-events-none absolute top-0 right-0 z-10 bg-zinc-900/85 text-white backdrop-blur-md border-b border-l border-white/20 text-[9px] font-bold tracking-widest px-1.5 py-2.5 [writing-mode:vertical-rl] select-none uppercase font-mono shadow-xs rounded-tr-2xl rounded-bl-lg">
             SOLD OUT
           </span>
         ) : product.saveBadge ? (
-          <span className="pointer-events-none absolute top-0 right-0 z-1 bg-[#c92a2a] text-white text-[9px] font-bold tracking-widest px-1.5 py-2.5 [writing-mode:vertical-rl] select-none uppercase font-mono shadow-xs rounded-tr-2xl">
+          <span className="pointer-events-none absolute top-0 right-0 z-10 bg-[#c92a2a]/90 text-white backdrop-blur-md border-b border-l border-white/30 text-[9px] font-bold tracking-widest px-1.5 py-2.5 [writing-mode:vertical-rl] select-none uppercase font-mono shadow-xs rounded-tr-2xl rounded-bl-lg">
             {product.saveBadge}
           </span>
         ) : isNew ? (
-          <span className="pointer-events-none absolute top-0 right-0 z-1 bg-black text-white text-[10px] font-bold tracking-widest px-1.5 py-2.5 [writing-mode:vertical-rl] select-none uppercase rounded-tr-2xl">
+          <span className="pointer-events-none absolute top-0 right-0 z-10 bg-black/85 text-white backdrop-blur-md border-b border-l border-white/25 text-[10px] font-bold tracking-widest px-1.5 py-2.5 [writing-mode:vertical-rl] select-none uppercase shadow-xs rounded-tr-2xl rounded-bl-lg">
             NEW
           </span>
         ) : null}
@@ -74,7 +74,7 @@ export default function ProductCard({ product, isNew }: ProductCardProps) {
       {/* Product Title Only */}
       <Link
         href={productHref}
-        className="hover:opacity-75 transition-opacity block mt-3 mb-1.5"
+        className="hover:opacity-75 transition-opacity block mt-3 mb-1.5 relative z-2"
       >
         <h3 className="text-sm font-medium text-twom-title leading-snug line-clamp-1">
           {product.name}
@@ -82,20 +82,20 @@ export default function ProductCard({ product, isNew }: ProductCardProps) {
       </Link>
 
       {/* Inventory Stock Pill Slot - reserves space when stock > 10 so all cards have identical length */}
-      <div className="min-h-5.5 mb-2.5 flex items-center">
+      <div className="min-h-5.5 mb-2.5 flex items-center relative z-2">
         {stock <= 10 &&
           (isOutOfStock ? (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-wider font-semibold bg-zinc-100 text-zinc-500 border border-zinc-200">
+            <span className="liquid-glass-pill inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-wider font-semibold text-zinc-500">
               <span className="w-1.5 h-1.5 rounded-full bg-zinc-400" />
               Out of stock
             </span>
           ) : stock <= 5 ? (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-wider font-semibold bg-rose-50 text-rose-700 border border-rose-200/80">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-wider font-semibold bg-rose-50/80 text-rose-700 border border-rose-200/70 backdrop-blur-xs">
               <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
               Only {stock} left
             </span>
           ) : (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-wider font-semibold bg-amber-50 text-amber-800 border border-amber-200/80">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-wider font-semibold bg-amber-50/80 text-amber-800 border border-amber-200/70 backdrop-blur-xs">
               <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
               Only {stock} left
             </span>
@@ -103,8 +103,8 @@ export default function ProductCard({ product, isNew }: ProductCardProps) {
       </div>
 
       {/* Bottom Action Row: Price Pill (Left) + Cart Pill Button (Right) */}
-      <div className="flex items-center justify-between gap-2 mt-auto">
-        <div className="bg-zinc-100/90 text-zinc-900 rounded-full px-3.5 py-1.5 text-xs md:text-sm font-semibold flex items-center gap-1.5 shrink min-w-0">
+      <div className="flex items-center justify-between gap-2 mt-auto relative z-2">
+        <div className="liquid-glass-pill text-zinc-900 rounded-full px-3.5 py-1.5 text-xs md:text-sm font-semibold flex items-center gap-1.5 shrink min-w-0">
           <span className="truncate">{formatNaira(product.price)}</span>
           {product.originalPrice && product.originalPrice > product.price && (
             <span className="text-zinc-400 line-through text-[11px] font-normal shrink-0">
@@ -122,10 +122,10 @@ export default function ProductCard({ product, isNew }: ProductCardProps) {
               ? `${product.name} is out of stock`
               : `Quick buy ${product.name}`
           }
-          className={`rounded-full px-4 py-1.5 flex items-center justify-center transition-all shrink-0 shadow-xs touch-manipulation ${
+          className={`rounded-full px-4 py-1.5 flex items-center justify-center transition-all shrink-0 touch-manipulation ${
             isOutOfStock
-              ? "bg-zinc-100 text-zinc-400 border border-zinc-200 cursor-not-allowed"
-              : "bg-black text-white hover:bg-zinc-800 cursor-pointer active:scale-95"
+              ? "bg-white/40 text-zinc-400 border border-white/50 backdrop-blur-sm cursor-not-allowed"
+              : "liquid-glass-dark text-white hover:brightness-115 cursor-pointer active:scale-95"
           }`}
         >
           <svg

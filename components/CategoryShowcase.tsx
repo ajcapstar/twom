@@ -35,22 +35,27 @@ export default function CategoryShowcase({
 
   return (
     <section className="w-full max-w-7xl mx-auto px-4 md:px-6 pt-4 pb-0 md:py-20">
-      {/* Category Tabs Header */}
-      <div className="flex items-center gap-6 md:gap-10 mb-4 md:mb-12">
-        {tabs.map((tab) => (
-          <button
-            key={tab}
-            type="button"
-            onClick={() => setActiveTab(tab)}
-            className={`font-nippo italic uppercase text-lg md:text-2xl tracking-wider transition-colors cursor-pointer ${
-              activeTab === tab
-                ? "font-black text-black"
-                : "font-black text-zinc-300 hover:text-zinc-600"
-            }`}
-          >
-            {tab}
-          </button>
-        ))}
+      {/* Liquid Glass Category Switcher Dock */}
+      <div className="flex items-center mb-6 md:mb-10">
+        <div className="liquid-glass liquid-glass-sheen inline-flex items-center p-1.5 rounded-full gap-1 sm:gap-2">
+          {tabs.map((tab) => {
+            const isActive = activeTab === tab;
+            return (
+              <button
+                key={tab}
+                type="button"
+                onClick={() => setActiveTab(tab)}
+                className={`relative px-4 sm:px-6 py-2 sm:py-2.5 rounded-full font-nippo italic uppercase text-xs sm:text-sm md:text-base tracking-wider transition-all duration-300 cursor-pointer ${
+                  isActive
+                    ? "liquid-glass-pill text-twom-title font-black shadow-[0_4px_12px_rgba(0,0,0,0.06)]"
+                    : "text-zinc-600 hover:text-twom-title font-bold hover:bg-white/40"
+                }`}
+              >
+                {tab}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Horizontal Scrollable Product Carousel */}
